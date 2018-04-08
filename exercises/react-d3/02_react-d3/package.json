@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Sample webpack project",
   "scripts": {
-    "start": "webpack-dev-server --public $C9_HOSTNAME --progress"
+    "start": "webpack-dev-server --progress"
   },
   "author": "DS",
   "license": "ISC",
