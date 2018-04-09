@@ -17,7 +17,8 @@ const randomNum = () => Math.floor(Math.random() * 1000);
 
 // A function that creates an array of 50 elements of (x, y) coordinates.
 const randomDataSet = () => {
-  return Array.apply(null, Array(numDataPoints)).map(() => [randomNum(), randomNum()]);
+
+  return Array.apply(null, {length: numDataPoints}).map(() => [randomNum(), randomNum()]);
 }
 
 export default class Chart extends React.Component{
