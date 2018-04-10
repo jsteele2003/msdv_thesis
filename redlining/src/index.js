@@ -1,3 +1,5 @@
+import App from "./app";
+
 const arr = [1, 2, 3];
-const iAmJavascriptES6 = () => console.log(...arr);
-window.iAmJavascriptES6 = iAmJavascriptES6;
+const babelTest = () => console.log(...arr);
+window.babelTest = babelTest();

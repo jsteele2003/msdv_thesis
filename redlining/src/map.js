@@ -1,3 +1,5 @@
+import mapboxgl from 'mapbox-gl';
+
 class Map extends React.Component {
     componentDidMount() {
         this.map = new mapboxgl.Map({
