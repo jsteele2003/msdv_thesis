@@ -10,7 +10,7 @@ class Map extends React.Component {
     componentDidMount() {
         this.map = new mapboxgl.Map({
             container: this.mapContainer,
-            style: 'mapbox://styles/mapbox/streets-v9'
+            style: 'https://openmaptiles.github.io/toner-gl-style/style-cdn.json'
         });
     }
 
