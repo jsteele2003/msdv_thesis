@@ -1,4 +1,10 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
 import mapboxgl from 'mapbox-gl';
+
+
+mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
+
 
 class Map extends React.Component {
     componentDidMount() {
@@ -24,4 +30,4 @@ class Map extends React.Component {
     }
 }
 
-ReactDOM.render(<Map />, document.getElementById('app'));
+ReactDOM.render(<Map />, document.getElementById('map'));
