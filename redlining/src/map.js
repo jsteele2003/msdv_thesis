@@ -20,7 +20,7 @@ const options = [{
 }]
 
 
-class Map extends React.Component {
+export default class Map extends React.Component {
 
     constructor(props: Props) {
         super(props);
@@ -77,4 +77,4 @@ class Map extends React.Component {
         return <div style={style} ref={el => this.mapContainer = el} />;
     }
 }
-ReactDOM.render(<Map />, document.getElementById('map'));
+// ReactDOM.render(<Map />, document.getElementById('map'));
