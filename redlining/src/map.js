@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+// import ReactDOM from 'react-dom';
 import mapboxgl from 'mapbox-gl';
 import data from '../data/HOLC_Philadelphia.json';
 
