@@ -55,31 +55,31 @@ function genPoints(filePath){
         let rArr = [];
         let geoData = JSON.parse(data);
         geoData.features.forEach(function(elem, index){
-            let ptArr = [];
-            let pop = (elem.properties['totalPop'] / 10);
-            let income = elem.properties['medianIncome'];
-            if(pop != 0){
+            let pop = parseInt((elem.properties['totalPop'] / 10));
+            if(pop > 10){
+                let ptArr = [];
                 let weights = [];
+                let income = elem.properties['medianIncome'];
                 weights.push(parseInt(pop  * (.01 * elem.properties['numWhite'])));
                 weights.push(parseInt(pop  * (.01 * elem.properties['numBlack'])));
                 weights.push(parseInt(pop  * (.01 * elem.properties['numAsian'])));
                 weights.push(parseInt(pop  * (.01 * elem.properties['numLatino'])));
 
-                let reducer = (accumulator, currentValue) => accumulator + currentValue;
-                let totPts = weights.reduce(reducer);
                 // console.log(totPts);
 
-                let points = randomPointsOnPolygon(totPts, elem);
-
-                // console.log(whGeo);
-                // popPoints.properties = ;
-                // console.log(popPoints.properties);
+                let points = randomPointsOnPolygon(pop, elem);
+                // console.log(pop)
+                points.forEach(function(elem) {
+                    ptArr = elem.geometry.coordinates;
+                    ptArr.push(weightedRandom(weights));
+                    // console.log(ptArr);
+                    // console.log(weights);
+                    rArr.push(ptArr);
+                })
             }
-
-            // console.log(elem.properties['display'])
-
-
         })
+        console.log(rArr);
+        fs.writeFile("./pennDots.json", JSON.stringify(rArr))
     });
 }
 

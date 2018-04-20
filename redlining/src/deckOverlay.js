@@ -16,7 +16,7 @@ export default class DeckOverlay extends Component {
     }
 
     render() {
-        const {viewport, maleColor, femaleColor, data, radius} = this.props;
+        const {viewport, wColor, bColor, aColor, data, radius} = this.props;
 
         if (!data) {
             return null;
@@ -28,10 +28,14 @@ export default class DeckOverlay extends Component {
             radiusScale: radius,
             radiusMinPixels: 0.25,
             getPosition: d => [d[0], d[1], 0],
-            getColor: d => (d[2] === 1 ? maleColor : femaleColor),
+            getColor: function(d){if(d[2] == 0){
+                                return wColor
+                            } else if(d[2] == 1){
+                return bColor
+        } else return aColor},
             getRadius: d => 1,
             updateTriggers: {
-                getColor: [maleColor, femaleColor]
+                getColor: [wColor, bColor, aColor]
             }
         });
 

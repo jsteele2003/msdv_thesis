@@ -5,13 +5,12 @@ import DeckOverlay from './deckOverlay.js';
 
 // Set your mapbox token here
 const MAPBOX_TOKEN = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA'; // eslint-disable-line
-const MALE_COLOR = [0, 128, 255];
-const FEMALE_COLOR = [255, 0, 128];
+const W_COLOR = [0, 128, 255];
+const B_COLOR = [255, 0, 128];
+const A_COLOR = [137, 244, 66];
 
 // Source data CSV
-const DATA_URL =
-    'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/scatterplot/manhattan.json'; // eslint-disable-line
-
+const DATA_URL = '../data/pennDots.json';
 export default class DeckRoot extends React.Component {
     constructor(props) {
         super(props);
@@ -60,8 +59,9 @@ export default class DeckRoot extends React.Component {
                 <DeckOverlay
                     viewport={viewport}
                     data={data}
-                    maleColor={MALE_COLOR}
-                    femaleColor={FEMALE_COLOR}
+                    wColor={W_COLOR}
+                    bColor={B_COLOR}
+                    aColor={A_COLOR}
                     radius={15}
                 />
             </MapGL>
