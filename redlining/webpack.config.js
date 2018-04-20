@@ -2,6 +2,8 @@ const resolve = require('path').resolve;
 const webpack = require('webpack');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const Dotenv = require('dotenv-webpack');
+
 
 module.exports = {
   module: {
@@ -25,7 +27,6 @@ module.exports = {
 
     resolve: {
         alias: {
-            // From mapbox-gl-js README. Required for non-browserify bundlers (e.g. webpack):
             'mapbox-gl$': resolve('./node_modules/mapbox-gl/dist/mapbox-gl.js')
         }
     },
@@ -34,16 +35,12 @@ module.exports = {
             template: "./src/index.html",
             filename: "./index.html"
         }),
+        new Dotenv({
+            path: './.env',
+        }),
         new MiniCssExtractPlugin({
             filename: "[name].css",
             chunkFilename: "[id].css"
         }),
-        new webpack.DefinePlugin({
-            PRODUCTION: JSON.stringify(true),
-            VERSION: JSON.stringify("5fa3b9"),
-            BROWSER_SUPPORTS_HTML5: true,
-            TWO: "1+1",
-            "typeof window": JSON.stringify("object")
-        })
     ]
 };

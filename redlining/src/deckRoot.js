@@ -1,15 +1,13 @@
-/* global document, fetch, window */
 import React from 'react';
 import MapGL from 'react-map-gl';
 import DeckOverlay from './deckOverlay.js';
 
-// Set your mapbox token here
-const MAPBOX_TOKEN = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA'; // eslint-disable-line
+const MAPBOX_TOKEN = process.env.MAPBOX;
 const W_COLOR = [0, 128, 255];
 const B_COLOR = [255, 0, 128];
 const A_COLOR = [137, 244, 66];
 
-// Source data CSV
+
 const DATA_URL = '../data/pennDots.json';
 export default class DeckRoot extends React.Component {
     constructor(props) {
