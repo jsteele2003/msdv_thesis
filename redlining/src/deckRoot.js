@@ -1,14 +1,13 @@
 import React from 'react';
 import MapGL from 'react-map-gl';
 import DeckOverlay from './deckOverlay.js';
-
 const MAPBOX_TOKEN = process.env.MAPBOX;
 const W_COLOR = [0, 128, 255];
 const B_COLOR = [255, 0, 128];
 const A_COLOR = [137, 244, 66];
 
 
-const DATA_URL = '../data/pennDots.json';
+const DATA_URL = '../data/2016/pennDots.json';
 export default class DeckRoot extends React.Component {
     constructor(props) {
         super(props);
@@ -17,7 +16,7 @@ export default class DeckRoot extends React.Component {
                 ...DeckOverlay.defaultViewport,
                 width: 0,
                 height: 0,
-                style: 'https://openmaptiles.github.io/toner-gl-style/style-cdn.json'
+                // style: 'https://openmaptiles.github.io/toner-gl-style/style-cdn.json'
             },
             data: null
         };
@@ -34,7 +33,7 @@ export default class DeckRoot extends React.Component {
 
     _resize() {
         this._onViewportChange({
-            width: window.innerWidth,
+            width: window.innerWidth / 2,
             height: window.innerHeight
         });
     }
@@ -47,6 +46,7 @@ export default class DeckRoot extends React.Component {
 
     render() {
         const {viewport, data} = this.state;
+        // console.log(this);
 
         return (
             <MapGL
@@ -60,7 +60,7 @@ export default class DeckRoot extends React.Component {
                     wColor={W_COLOR}
                     bColor={B_COLOR}
                     aColor={A_COLOR}
-                    radius={15}
+                    radius={10}
                 />
             </MapGL>
         );

@@ -6,6 +6,7 @@ const Dotenv = require('dotenv-webpack');
 
 
 module.exports = {
+  devtool: "#eval-source-map",
   module: {
       rules: [
           {
