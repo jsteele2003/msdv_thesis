@@ -7,7 +7,7 @@ const B_COLOR = [255, 0, 128];
 const A_COLOR = [137, 244, 66];
 
 
-const DATA_URL = '../data/2016/pennDots.json';
+const DATA_URL = '../data/1940Dots.json';
 export default class DeckRoot extends React.Component {
     constructor(props) {
         super(props);

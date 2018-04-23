@@ -1,6 +1,10 @@
+const COUNTIES_ARR = ['Philadelphia', 'Queens', 'New York', 'Richmond City', 'Baltimore City', 'Bronx', 'Kings', 'Fulton', 'DeKalb'];
 const fs = require('fs');
 const csvjs=require('csvtojson');
+const reproject = require('reproject');
+const proj4 = require('proj4')
 const weightedRandom = require('weighted-random');
+const from = '+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m no_defs';
 
 let randomPointsOnPolygon = require('random-points-on-polygon');
 let turf = require('@turf/turf');
@@ -12,11 +16,10 @@ const geoFilePath='../data/2016/pa_16_final.json';
 const geoFilePath_1940='../data/1940/1940_combinedGeo.json';
 
 
-
 /**
  *
  * @param filePath: path to csv file to be transformed
- * @returns write to .json, for ndjson-cli
+ * @returns write to .json, for ndjson
  */
 function genJson(filePath, year) {
     let rJson = [];
@@ -66,10 +69,10 @@ function genPoints(filePath, year, scope){
         let rArr = [];
         let geoData = JSON.parse(data);
         geoData.features.forEach(function(elem, index){
-            let pop = parseInt((elem.properties['totalPop']));
+            let pop = parseInt((elem.properties['totalPop'])) / 10;
             if(year ==2016) {
-                let county = elem.properties['display'].split(',')[1];
-                if (pop > 10 && county == ' Philadelphia County') {
+                let county = elem.properties['display'].split(',')[1].split(" ")[1];
+                if (pop > 10 && county == 'Philadelphia') {
                     let ptArr = [];
                     let weights = [];
                     let income = elem.properties['medianIncome'];
@@ -78,10 +81,9 @@ function genPoints(filePath, year, scope){
                     weights.push(parseInt(pop * (.01 * elem.properties['numAsian'])));
                     weights.push(parseInt(pop * (.01 * elem.properties['numLatino'])));
 
-                    // console.log(totPts);
 
                     let points = randomPointsOnPolygon(pop, elem);
-                    // console.log(pop)
+                    console.log(pop)
                     points.forEach(function (elem) {
                         ptArr = elem.geometry.coordinates;
                         ptArr.push(weightedRandom(weights));
@@ -91,12 +93,27 @@ function genPoints(filePath, year, scope){
                 }
             } else if(year == 1940){
                 let county = elem.properties['county'];
-                    console.log(county);
+                    if(pop > 10 && COUNTIES_ARR.includes(county)){
+                        let ptArr = [];
+                        let weights = [];
+                        weights.push(parseInt(elem.properties['numwhite']));
+                        weights.push(parseInt(elem.properties['numPOC']));
 
+                        let  points = randomPointsOnPolygon(pop, elem);
+                        // console.log(pop)
+                        points.forEach(function (elem) {
+                            console.log(reproject.reproject(elem, from, proj4.WGS84))
+                            console.log(elem.geometry.coordinates)
+                            ptArr = elem.geometry.coordinates;
+                            ptArr.push(weightedRandom(weights));
+                            rArr.push(ptArr);
+                            // console.log(ptArr);
+                        })
+                    }
             }
         })
-        console.log(rArr);
-        fs.writeFile("./pennDots.json", JSON.stringify(rArr))
+        // console.log(rArr);
+        fs.writeFile("../data/" + year + "Dots.json", JSON.stringify(rArr))
     });
 }
 
