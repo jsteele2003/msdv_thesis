@@ -28,6 +28,8 @@
     "random-points-on-polygon": "0.0.4",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
+    "react-redux": "^5.0.7",
+    "react-stats": "0.0.5",
     "redux": "^4.0.0",
     "reproject": "^1.2.1",
     "webpack": "^4.5.0",
@@ -46,6 +48,7 @@
     "react-viewport-slider": "^1.0.0",
     "semantic-ui-react": "^0.79.1",
     "styled-components": "^3.2.6",
+    "tween": "^0.9.0",
     "whatwg-fetch": "^2.0.4"
   }
 }

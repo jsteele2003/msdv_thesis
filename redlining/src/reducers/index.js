@@ -1,4 +1,4 @@
-import { MapMode } from '../config'
+import { MapMode } from '../constants/map_constants'
 
 const NY_LOCATION = {
     latitude: 40.70237278,
@@ -33,4 +33,5 @@ const rootReducer = (state = INITIAL_STATE, action) => {switch (action.type) {
     default:
         return state;
 }};
+
 export default rootReducer;

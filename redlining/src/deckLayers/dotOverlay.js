@@ -11,12 +11,12 @@ export default class DeckOverlay extends Component {
             maxZoom: 16,
             pitch: 0,
             bearing: 0,
-            useDevicePixels: false
+            useDevicePixels: false,
         };
     }
 
     render() {
-        const {viewport, wColor, bColor, aColor, data, radius} = this.props;
+        const {viewport, wColor, bColor, aColor, colors, data, radius} = this.props;
 
         if (!data) {
             return null;
@@ -28,11 +28,7 @@ export default class DeckOverlay extends Component {
             radiusScale: radius,
             radiusMinPixels: 0.25,
             getPosition: d => [d[0], d[1], 0],
-            getColor: function(d){if(d[2] == 0){
-                                return wColor
-                            } else if(d[2] == 1){
-                return bColor
-        } else return aColor},
+            getColor: d => colors[d[2]],
             getRadius: d => 1,
             updateTriggers: {
                 getColor: [wColor, bColor, aColor]

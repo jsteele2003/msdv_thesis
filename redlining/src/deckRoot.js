@@ -1,13 +1,16 @@
 import React from 'react';
 import MapGL from 'react-map-gl';
-import DeckOverlay from './deckOverlay.js';
+import DeckOverlay from './deckLayers/dotOverlay.js';
+
 const MAPBOX_TOKEN = process.env.MAPBOX;
 const W_COLOR = [0, 128, 255];
 const B_COLOR = [255, 0, 128];
 const A_COLOR = [137, 244, 66];
+const L_COLOR = [244, 149, 66];
+const COLORS = [W_COLOR,B_COLOR,A_COLOR,L_COLOR];
+const DATA_URL = '../data/2016/pennDots.json';
 
 
-const DATA_URL = '../data/1940Dots.json';
 export default class DeckRoot extends React.Component {
     constructor(props) {
         super(props);
@@ -18,7 +21,7 @@ export default class DeckRoot extends React.Component {
                 height: 0,
                 // style: 'https://openmaptiles.github.io/toner-gl-style/style-cdn.json'
             },
-            data: null
+            data: null,
         };
 
         fetch(DATA_URL)
@@ -33,7 +36,7 @@ export default class DeckRoot extends React.Component {
 
     _resize() {
         this._onViewportChange({
-            width: window.innerWidth / 2,
+            width: window.innerWidth,
             height: window.innerHeight
         });
     }
@@ -45,18 +48,20 @@ export default class DeckRoot extends React.Component {
     }
 
     render() {
-        const {viewport, data} = this.state;
+        const {viewport, data, style} = this.state;
         // console.log(this);
 
         return (
             <MapGL
                 {...viewport}
+                mapStyle="mapbox://styles/joesteele/cjgd6f57e00072ro6e2srgmbs"
                 onViewportChange={this._onViewportChange.bind(this)}
-                mapboxApiAccessToken={MAPBOX_TOKEN}
+                mapboxApiAccessToken={'pk.eyJ1Ijoiam9lc3RlZWxlIiwiYSI6ImNqOXp5bjlyZzJqdXUzMnBjNXppbGV2Nm4ifQ.p_Pk2DU8shEp1UNTauqf2Q'}
             >
                 <DeckOverlay
                     viewport={viewport}
                     data={data}
+                    colors={COLORS}
                     wColor={W_COLOR}
                     bColor={B_COLOR}
                     aColor={A_COLOR}
