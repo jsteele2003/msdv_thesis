@@ -12,15 +12,16 @@ export const holc_URL = '../data/holc/holc.geojson';
 
 export const MapMode = {
     NONE: 'NONE',
-    DOTS: 'Dots',
-    HEX: 'Hex',
-    HOLC: 'Holc'
+    DOTS: 'DOTS',
+    HEXES: 'HEXES',
+    HOLC: 'HOLC'
 }
 
 const W_COLOR = [0, 128, 255];
 const B_COLOR = [255, 0, 128];
 const A_COLOR = [137, 244, 66];
 const L_COLOR = [244, 149, 66];
+
 
 export const DOT_COLORS = [W_COLOR,B_COLOR,A_COLOR,L_COLOR];
 

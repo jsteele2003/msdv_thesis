@@ -23,13 +23,19 @@ const INITIAL_STATE = {
     },
     popDots: null,
     holc: null,
+    hexes: null,
     mapMode: MapMode.NONE,
 };
 
 const rootReducer = (state = INITIAL_STATE, action) => {switch (action.type) {
     case 'UPDATE_MAP':
         //spread notation: returns previous state, with new prop
-        return {...state, mapViewState: action.mapViewState}
+        console.log(action);
+        return {...state, mapViewState: action.mapViewState};
+    case 'SELECT_MODE':
+        const mapViewState = state.mapViewState;
+        console.log(action.mode)
+        return {...state, mapViewState, mapMode: action.mode}
     default:
         return state;
 }};
