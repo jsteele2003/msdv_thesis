@@ -2,8 +2,9 @@ import React from 'react';
 import MapGL from 'react-map-gl';
 import DeckOverlay from './deckLayers/overlayContainer.js';
 import rootReducer from './reducers/index';
-import { updateMap, selectMode } from './actions/action';
-import { DARK_TOKEN, MapMode, dots16_URL, DOT_COLORS} from './constants/map_constants'
+import { updateMap, selectMode, loadPopPoints } from './actions/action';
+import { DARK_TOKEN, MapMode, dots16_URL, DOT_COLORS} from './constants/map_constants';
+import { _renderDotsOverlay } from './deckLayers/popDotsLayer'
 
 import ControlPanel from './hud/controlPanel';
 
@@ -13,6 +14,8 @@ import {connect} from "react-redux";
 class DeckRoot extends React.Component {
     constructor(props) {
         super(props);
+
+        //window viewport state, not needed in redux tree
         this.state = {
             width: window.innerWidth,
             height: window.innerHeight
@@ -27,10 +30,9 @@ class DeckRoot extends React.Component {
     }
 
     loadData() {
-        // Implement Timer here
         fetch(dots16_URL)
             .then(resp => resp.json())
-            .then(data => this.setState({dots: data}));
+            .then(data => this.props.dispatch(loadPopPoints(data)));
     }
 
     _handleResize() {
@@ -57,23 +59,54 @@ class DeckRoot extends React.Component {
     _handleSelectMode(mode) {
         this.props.dispatch(selectMode(mode))
     }
+    //
+    // _renderMap() {
+    //     const { mapViewState, mapMode } = this.props;
+    //     const { width, height } = this.state;
+    //     const isActiveOverlay = mapMode !== MapMode.NONE;
+    //
+    //     return (
+    //         <MapGL
+    //             mapboxApiAccessToken={DARK_TOKEN}
+    //             width={width}
+    //             height={height}
+    //             mapStyle="mapbox://styles/joesteele/cjgd6f57e00072ro6e2srgmbs"
+    //             perspectiveEnabled
+    //             { ...mapViewState }
+    //             onViewportChange={this._handleViewportChanged.bind(this)}>
+    //         </MapGL>
+    //     );
+    // }
 
-    _renderMap() {
-        const { mapViewState, mapMode } = this.props;
-        const { width, height } = this.state;
-        const isActiveOverlay = mapMode !== MapMode.NONE;
+    _onWebGL(gl) {
+        gl.enable(gl.DEPTH_TEST);
+        gl.depthFunc(gl.LEQUAL);
+    }
+
+    _renderVisualizationOverlay() {
+        const { popDots, hexes, holc,  mapMode } = this.props;
+
+        if (popDots === null) {
+            return []
+        }
+
+        //props for overlays
+        const layerParams = {
+            props: this.props,
+            //window info in state
+            state: this.state,
+            onWebGLInitialized: this._onWebGL,
+            // effects: this._effects,
+        }
 
         return (
-            <MapGL
-                mapboxApiAccessToken={DARK_TOKEN}
-                width={width}
-                height={height}
-                mapStyle="mapbox://styles/joesteele/cjgd6f57e00072ro6e2srgmbs"
-                perspectiveEnabled
-                { ...mapViewState }
-                onViewportChange={this._handleViewportChanged.bind(this)}>
-            </MapGL>
-        );
+            //each will evaluate to expression to render when true
+            <div>
+                { mapMode === MapMode.DOTS && _renderDotsOverlay(layerParams) }
+                { mapMode === MapMode.HEXES && _renderHexesOverlay(layerParams) }
+                { mapMode === MapMode.HOLC && _renderGeoOverlay(layerParams) }
+            </div>
+        )
     }
 
     render() {
@@ -94,9 +127,10 @@ class DeckRoot extends React.Component {
                     height={height}
                     mapStyle="mapbox://styles/joesteele/cjgd6f57e00072ro6e2srgmbs"
                     { ...mapViewState }
-                    perspectiveEnabled
                     onViewportChange={this._handleViewportChanged.bind(this)}>
+                    {isActiveOverlay && this._renderVisualizationOverlay()}
                 </MapGL>
+
                 <ControlPanel {...mapSelectionProps}/>
             </div>
 
@@ -116,6 +150,7 @@ function mapStateToProps(state) {
         mapViewState: state.mapViewState,
         popDots: state.popDots,
         holc: state.holc,
+        hexes: state.hexes,
         mapMode: state.mapMode,
     }
 }

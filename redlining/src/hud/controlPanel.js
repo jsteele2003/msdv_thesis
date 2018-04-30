@@ -27,7 +27,7 @@ class ControlPanel extends PureComponent {
             <Container>
                 <div className='title-label'>Mode Selection</div>
                 <div className='selection'>
-                    <input type="checkbox" defaultChecked={mapMode === MapMode.DOTS} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.DOTS)}}/>
+                    <input type="checkbox" checked={mapMode === MapMode.DOTS} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.DOTS)}}/>
                     Population Dot Map
                     <input type="checkbox" checked={mapMode === MapMode.HOLC} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.HOLC)}}/>
                     HOLC Borders

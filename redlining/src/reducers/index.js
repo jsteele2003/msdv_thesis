@@ -1,4 +1,5 @@
 import { MapMode } from '../constants/map_constants'
+import {UPDATE_MAP, SELECT_MODE, LOAD_POP_POINTS} from '../constants/action_types'
 
 const NY_LOCATION = {
     latitude: 40.70237278,
@@ -28,14 +29,19 @@ const INITIAL_STATE = {
 };
 
 const rootReducer = (state = INITIAL_STATE, action) => {switch (action.type) {
-    case 'UPDATE_MAP':
+    case UPDATE_MAP:
         //spread notation: returns previous state, with new prop
         console.log(action);
         return {...state, mapViewState: action.mapViewState};
-    case 'SELECT_MODE':
+    case SELECT_MODE:
         const mapViewState = state.mapViewState;
         console.log(action.mode)
-        return {...state, mapViewState, mapMode: action.mode}
+        return {...state, mapViewState, mapMode: action.mode};
+    case LOAD_POP_POINTS:
+        console.log('reached pop with data:' + action.data)
+        const popDots = action.points;
+        return {...state, popDots};
+
     default:
         return state;
 }};

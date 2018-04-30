@@ -13,7 +13,7 @@ let turf = require('@turf/turf');
 const censusFilePath_2016='../../data/2016/pa_census16_obj.csv';
 const censusFilePath_1940='../../data/1940/1940_pop.csv';
 
-const geoFilePath='../../data/2016/pa_16_final.json';
+const geoFilePath= '/Users/joesteele/WebstormProjects/msdv_thesis/redlining/data/2016/pa_16_final.json';
 const geoFilePath_1940='../../data/1940/1940_combinedGeo.json';
 
 
@@ -72,7 +72,7 @@ function genPoints(filePath, year){
         let rArr = [];
         let geoData = JSON.parse(data);
         geoData.features.forEach(function(elem, index){
-            let pop = parseInt((elem.properties['totalPop']));
+            let pop = parseInt((elem.properties['totalPop'])) / 10;
             if(year ==2016) {
                 let county = elem.properties['display'].split(',')[1].split(" ")[1];
                 if (pop > 10 && county == 'Philadelphia') {
@@ -119,10 +119,14 @@ function genPoints(filePath, year){
     });
 }
 
+function genHexPoints(filePath){
+
+}
+
 //helper rng
 let rand = function(min, max) {
     return Math.random() * (max - min) + min;
 };
 // genJson(censusFilePath_1940, 1940);
-
-genPoints(geoFilePath_1940, 1940);
+console.log(process.cwd())
+genPoints(geoFilePath, 2016);
