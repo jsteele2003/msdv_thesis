@@ -8,9 +8,8 @@ import store from "./store/index";
 import { updateMap } from "./actions/action";
 
 window.store = store;
-store.subscribe(() => console.log(store.getState()));
+// store.subscribe(() => console.log(store.getState()));
 // store.dispatch( updateMap({ zoom: 15}) )
-console.log(store.getState());
 
 
 

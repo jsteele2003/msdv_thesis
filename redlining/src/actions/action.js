@@ -6,6 +6,12 @@ export const updateMap = mapViewState =>
 export const selectMode = mode =>
     ({type: SELECT_MODE, mode: mode});
 
+export const selectBase = base =>
+    ({type: SELECT_BASE, base: base});
+
+export const selectYear = year =>
+    ({type: SELECT_YEAR, year: year});
+
 export function loadPopPoints(points) {
     return {type: LOAD_POP_POINTS, points: points};
 }

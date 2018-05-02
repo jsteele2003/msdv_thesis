@@ -1,3 +1,4 @@
+
 export const COUNTIES_ARR = ['Philadelphia', 'Queens', 'New York', 'Richmond City', 'Baltimore City', 'Bronx', 'Kings', 'Fulton', 'DeKalb'];
 
 export const MAPBOX_TOKEN = process.env.MAPBOX;
@@ -17,13 +18,27 @@ export const MapMode = {
     HOLC: 'HOLC'
 }
 
+export const MapBase = {
+    NONE: 'NONE',
+    TIFF: 'TIFF',
+    TRACT: 'TRACT',
+    HOLC: 'HOLC'
+}
+
+export const MapYear = {
+    OLD: 1940,
+    NOW: 2016
+}
+
 const W_COLOR = [0, 128, 255];
 const B_COLOR = [255, 0, 128];
 const A_COLOR = [137, 244, 66];
 const L_COLOR = [244, 149, 66];
+const C_COLOR = [244, 80, 6];
 
 
 export const DOT_COLORS = [W_COLOR,B_COLOR,A_COLOR,L_COLOR];
+export const OLD_COLORS = [W_COLOR, C_COLOR];
 
 
 
