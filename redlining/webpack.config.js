@@ -12,12 +12,9 @@ module.exports = {
           {
               // Compile ES2015 using buble
               test: /\.js$/,
-              loader: 'buble-loader',
+              loader: 'babel-loader',
               include: [resolve('.')],
-              exclude: [/node_modules/],
-              options: {
-                  objectAssign: 'Object.assign'
-              }
+              exclude: [/node_modules/]
           },
           {
               test: /\.css$/,

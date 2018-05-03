@@ -15,20 +15,18 @@ export const MapMode = {
     NONE: 'NONE',
     DOTS: 'DOTS',
     HEXES: 'HEXES',
-    HOLC: 'HOLC'
+    HOLC: 'HOLC',
+    OLD: 'OLD'
 }
 
 export const MapBase = {
     NONE: 'NONE',
     TIFF: 'TIFF',
     TRACT: 'TRACT',
-    HOLC: 'HOLC'
+    HOLC: 'HOLC',
+    BUILD: 'BUILD'
 }
 
-export const MapYear = {
-    OLD: 1940,
-    NOW: 2016
-}
 
 const W_COLOR = [0, 128, 255];
 const B_COLOR = [255, 0, 128];

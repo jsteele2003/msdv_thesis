@@ -136,7 +136,7 @@ class DeckRoot extends React.Component {
                     mapboxApiAccessToken={DARK_TOKEN}
                     width={width}
                     height={height}
-                    mapStyle={defaultMapStyle}
+                    mapStyle={mapStyle}
                     { ...mapViewState }
                     onViewportChange={this._handleViewportChanged.bind(this)}>
                     {isActiveOverlay && this._renderVisualizationOverlay()}
@@ -150,6 +150,7 @@ class DeckRoot extends React.Component {
     }
 }
 
+//binds state tree to component props
 function mapStateToProps(state) {
     return {
         mapViewState: state.mapViewState,
@@ -158,7 +159,8 @@ function mapStateToProps(state) {
         hexes: state.hexes,
         mapMode: state.mapMode,
         mapBase: state.mapBase,
-        mapStyle: state.mapStyle
+        mapStyle: state.mapStyle,
+        dotRadius: state.dotRadius
     }
 }
 const DeckApp = connect(mapStateToProps)(DeckRoot);

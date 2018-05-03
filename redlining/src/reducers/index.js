@@ -1,9 +1,9 @@
-import { MapMode, MapBase, MapYear} from '../constants/map_constants'
+import { MapMode, MapBase} from '../constants/map_constants'
 import {UPDATE_MAP, SELECT_MODE, LOAD_POP_POINTS, LOAD_HOLC,LOAD_HEXES} from '../constants/action_types'
 import MAP_STYLE from '../../data/mapStyles/defaultMap'
-import TEST_STYLE from '../../data/mapStyles/testStyle'
+import {fromJS} from "immutable";
 
-
+const defaultMapStyle = fromJS(MAP_STYLE);
 
 //constants for initial state and flyto interpolators
 const NY_LOCATION = {
@@ -23,17 +23,17 @@ const INITIAL_STATE = {
         longitude: PH_LOCATION.longitude,
         zoom: 11,
         maxZoom: 16,
-        pitch: 0,
+        pitch: 60,
         useDevicePixels: false,
         bearing: 0
     },
     popDots: null,
+    dotRadius: 1,
     holc: null,
     hexes: null,
     mapMode: MapMode.NONE,
     mapBase: MapBase.NONE,
-    mapYear: 2016,
-    mapStyle : process.env.MAP_DARK_STYLE
+    mapStyle : defaultMapStyle
 };
 
 const rootReducer = (state = INITIAL_STATE, action) => {switch (action.type) {

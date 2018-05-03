@@ -19,7 +19,7 @@ export function renderDotsOverlay(param) {
 
 function _renderDotsLayer(param) {
 
-    const { popDots, mapMode} = param;
+    const { popDots, mapMode, dotRadius} = param;
     const colors = DOT_COLORS;
     return new ScatterplotLayer({
         id: 'dot-plot',
