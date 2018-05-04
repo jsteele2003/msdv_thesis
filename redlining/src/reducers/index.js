@@ -32,6 +32,7 @@ const INITIAL_STATE = {
     oCol : OLD_COLORS,
     layerOpacity: 1,
     popDots: null,
+    oldDots: null,
     holc: null,
     hexes: null,
     mapMode: MapMode.NONE,

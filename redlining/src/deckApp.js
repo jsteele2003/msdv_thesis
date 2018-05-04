@@ -3,7 +3,7 @@ import MapGL from 'react-map-gl';
 import DeckOverlay from './deckLayers/overlayContainer.js';
 import rootReducer from './reducers/index';
 import { updateMap, selectMode, loadPopPoints, loadHolc, updateOpacity, updateStyle } from './actions/action';
-import { DARK_TOKEN, MAPBOX_TOKEN, MapMode, dots16_URL, DOT_COLORS, OLD_COLORS} from './constants/map_constants';
+import { DARK_TOKEN, MAPBOX_TOKEN, MapMode, dots16_URL, dots40_URL} from './constants/map_constants';
 import { renderDotsOverlay } from './deckLayers/popDotsLayer';
 import {fromJS} from 'immutable';
 import TEST_STYLE from '../data/mapStyles/testStyle';
@@ -47,6 +47,10 @@ class DeckRoot extends React.Component {
         fetch(dots16_URL)
             .then(resp => resp.json())
             .then(data => this.props.dispatch(loadPopPoints(data)));
+        fetch(dots40_URL)
+            .then(resp => resp.json())
+            .then(data => this.props.dispatch(loadPopPoints(data)));
+
     }
 
     //dispatches fetch response to state tree
@@ -99,7 +103,7 @@ class DeckRoot extends React.Component {
 
 
     _renderVisualizationOverlay() {
-        const { popDots, hexes, holc,  mapMode } = this.props;
+        const { popDots, hexes, holc, mapMode } = this.props;
         if (popDots === null) {
             return []
         }
@@ -164,6 +168,8 @@ function mapStateToProps(state) {
         mapMode: state.mapMode,
         mapStyle: state.mapStyle,
         layerOpacity: state.layerOpacity,
+        pCol: state.pCol,
+        oCol: state.oCol
     }
 }
 const DeckApp = connect(mapStateToProps)(DeckRoot);
