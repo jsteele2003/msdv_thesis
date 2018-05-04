@@ -11,6 +11,8 @@ export const dots40_URL = '../data/1940/1940Dots.json';
 
 export const holc_URL = '../data/holc/holc.geojson';
 
+export const phil_HOLC_ID = "joesteele-6a5xs2ot";
+
 export const MapMode = {
     NONE: 'NONE',
     DOTS: 'DOTS',

@@ -5,8 +5,12 @@ import {Title, ControlContainer} from './styledInfo';
 import { connect } from 'react-redux';
 import { Button, Grid, Row, Col, ButtonGroup } from 'react-bootstrap';
 import Waypoint from 'react-waypoint';
-import { Link, Element , Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll'
+import MAP_STYLE from '../../data/mapStyles/philMapRaster'
+import DEF_STYLE from '../../data/mapStyles/philMap'
+import {fromJS} from "immutable";
 
+const rasterMapStyle = fromJS(MAP_STYLE);
+const defaultMapStyle = fromJS(DEF_STYLE);
 
 const defaultContainer =  ({children}) => <div className="control-panel">{children}</div>;
 
@@ -15,20 +19,41 @@ class ControlRoot extends PureComponent {
     constructor(props) {
         super(props);
 
+
         this.state = {
-            width: '100%'
+            width: '100%',
+            background: '-webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #ffa7a0 100%)',
+            visibility: 'visible'
         };
     }
 
 
-    _handleWipeEnter(c, p){
-        console.log(c)
-        if(this.state.width == '100%'){
-            this.setState({width: '33%'})
-        } else{
-            this.setState({width: '100%'})
+    _handleWipeEnter(c){
+        // console.log(c)
+        if(c.previousPosition == 'below'){
+            this.setState({width: '33%'});
+
+            this.props.rasterSetFunc(rasterMapStyle);
+
+
+            this.setState({visibility: 'hidden'});
+            this.setState({background: '-webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%'});
         }
 
+    }
+
+
+    _handleWipeLeave(c){
+        if(c.currentPosition == 'below'){
+            this.setState({width: '100%'});
+            this.setState({visibility: 'visible'});
+            this.setState({background: '-webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #ffa7a0 100%)'});
+            this.props.selectModeFunc(MapMode.NONE);
+            this.props.rasterSetFunc(defaultMapStyle);
+
+
+
+        }
     }
 
     _handleChangeMode(evt, mode) {
@@ -52,12 +77,13 @@ class ControlRoot extends PureComponent {
 
     render() {
         const {mapMode, mapBase} = this.props;
-        const {width} = this.state;
-        console.log(width);
+        const {width, background, visibility} = this.state;
         const Container = this.props.containerComponent || defaultContainer;
         return (
             <ControlContainer style={{
-                width: width
+                width: width,
+                background: background,
+                overflow: 'auto',
             }}>
                         <Grid
                             fluid={true}
@@ -65,7 +91,7 @@ class ControlRoot extends PureComponent {
                                 position: 'relative',
                                 height: '100%',
                                 width: '100%',
-                                overflow: 'scroll',
+                                overflow: 'auto',
                             }}>
 
                             {/*hacky v offset*/}
@@ -78,7 +104,7 @@ class ControlRoot extends PureComponent {
                                             Moving the Line
                                         </h1>
                                         <h3 className="text-center">
-                                            Dividing Borders in American Cities
+                                            Shifting Borders in American Cities
                                         </h3>
                                     </div>
                                 </Col>
@@ -95,52 +121,58 @@ class ControlRoot extends PureComponent {
                             <Row style={{ height: '70%'}}>
                                 <Col xs={8} xsOffset={2}>
                                     <p style={{fontSize: '2em'}} >
-                                        HOLC Context PLaceholder
+                                        HOLC Context Placeholder
                                     </p>
                                 </Col>
                             </Row>
                             <Row style={{ height: '30%'}}></Row>
                             <Row style={{ height: '70%'}}>
-                                <Col xs={8} xsOffset={2}>
-                                        <p style={{fontSize: '1.5em'}} >
-                                            In particular, the cities of Philadelphia and New York have shown sustained effects from these maps -
-                                            up until the present day
+                                <Col xs={6} xsOffset={3} xsHidden={true}>
+                                        <p style={{
+                                            fontSize: '1.5em',
+                                            visibility: visibility}} >
+                                            In particular, the borders drawn by these maps in the cities of Philadelphia and New York
+                                            made certain divisions more pronounced, across the lines of
+                                            segregation, housing value, and income - borders which still exist in the present day
                                         </p>
                                 </Col>
                             </Row>
-                            <Row style={{ height: '100%'}}>
+                            <Row style={{ height: '80%'}}>
                             </Row>
-                            <Row>
+                            <Row style={{height:'30%'}}>
                                 <Waypoint
-                                    onEnter={(currentPosition, previousPosition) => this._handleWipeEnter(currentPosition, previousPosition)}
+                                    onEnter={(evt) => this._handleWipeEnter(evt)} onLeave={(evt) => this._handleWipeLeave(evt)}
                                 />
+                                <Col xs={12}>
+                                <div className='title-label'>Mode Selection</div>
+                                <div className='selection'>
+                                    <input type="checkbox" checked={mapMode === MapMode.DOTS} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.DOTS)}}/>
+                                    Population Dot Map
+                                    <input type="checkbox" checked={mapMode === MapMode.HOLC} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.HOLC)}}/>
+                                    HOLC Borders
+                                    <input type="checkbox" checked={mapMode === MapMode.HEXES} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.HEXES)}}/>
+                                    Income Hex Grid
+                                </div>
+
+                                <div className='title-label'>Mouse Selection</div>
+                                <ButtonGroup bsSize="large">
+                                    <Button active={true} onChange={(evt)=>{this._handleChangeBase(evt, MapMode.HOLC)}}>HOLC Borders</Button>
+                                    <Button>Census Borders</Button>
+                                </ButtonGroup>
+
+                                <div className='title-label'>Cities</div>
+                                <ButtonGroup bsSize="large">
+                                    <Button>Philadelphia</Button>
+                                    <Button>New York</Button>
+                                </ButtonGroup>
+                                </Col>
                             </Row>
                         </Grid>;
 
 
                 {/*controls for redux */}
 
-                {/*<div className='title-label'>Mode Selection</div>*/}
-                {/*<div className='selection'>*/}
-                    {/*<input type="checkbox" checked={mapMode === MapMode.DOTS} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.DOTS)}}/>*/}
-                    {/*Population Dot Map*/}
-                    {/*<input type="checkbox" checked={mapMode === MapMode.HOLC} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.HOLC)}}/>*/}
-                    {/*HOLC Borders*/}
-                    {/*<input type="checkbox" checked={mapMode === MapMode.HEXES} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.HEXES)}}/>*/}
-                    {/*Income Hex Grid*/}
-                {/*</div>*/}
 
-                    {/*<div className='title-label'>Mouse Selection</div>*/}
-                    {/*<ButtonGroup bsSize="large">*/}
-                        {/*<Button active={true} onChange={(evt)=>{this._handleChangeBase(evt, MapMode.HOLC)}}>HOLC Borders</Button>*/}
-                        {/*<Button>Census Borders</Button>*/}
-                    {/*</ButtonGroup>*/}
-
-                {/*<div className='title-label'>Cities</div>*/}
-                {/*<ButtonGroup bsSize="large">*/}
-                    {/*<Button>Philadelphia</Button>*/}
-                    {/*<Button>New York</Button>*/}
-                {/*</ButtonGroup>*/}
 
             </ControlContainer>
         )

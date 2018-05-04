@@ -1,6 +1,6 @@
-import { MapMode, MapBase} from '../constants/map_constants'
-import {UPDATE_MAP, SELECT_MODE, LOAD_POP_POINTS, LOAD_HOLC,LOAD_HEXES} from '../constants/action_types'
-import MAP_STYLE from '../../data/mapStyles/defaultMap'
+import { MapMode, MapBase, DOT_COLORS, OLD_COLORS} from '../constants/map_constants'
+import {UPDATE_MAP, SELECT_MODE, LOAD_POP_POINTS, LOAD_HOLC,LOAD_HEXES, UPDATE_STYLE, UPDATE_OPACITY} from '../constants/action_types'
+import MAP_STYLE from '../../data/mapStyles/philMap'
 import {fromJS} from "immutable";
 
 const defaultMapStyle = fromJS(MAP_STYLE);
@@ -27,12 +27,14 @@ const INITIAL_STATE = {
         useDevicePixels: false,
         bearing: 0
     },
-    popDots: null,
     dotRadius: 1,
+    pCol : DOT_COLORS,
+    oCol : OLD_COLORS,
+    layerOpacity: 1,
+    popDots: null,
     holc: null,
     hexes: null,
     mapMode: MapMode.NONE,
-    mapBase: MapBase.NONE,
     mapStyle : defaultMapStyle
 };
 
@@ -40,6 +42,11 @@ const rootReducer = (state = INITIAL_STATE, action) => {switch (action.type) {
     case UPDATE_MAP:
         //spread notation: returns shallow copy of previous state, with new prop
         return {...state, mapViewState: action.mapViewState};
+    case UPDATE_STYLE:
+        console.log(action);
+        return {...state, mapStyle: action.mapStyle};
+    case UPDATE_OPACITY:
+        return {...state, layerOpacity: action.layerOpacity};
     case SELECT_MODE:
         const mapViewState = state.mapViewState;
         return {...state, mapMode: action.mode};

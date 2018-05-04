@@ -5,4 +5,7 @@ export const LOAD_HEXES = 'LOAD_HEXES';
 export const LOAD_HOLC = 'LOAD_HOLC';
 export const SELECT_CITY = 'SELECT_CITY';
 export const SELECT_BASE = 'SELECT_BASE';
+export const UPDATE_OPACITY = 'UPDATE_OPACITY';
+export const UPDATE_STYLE = 'UPDATE_STYLE';
+
 

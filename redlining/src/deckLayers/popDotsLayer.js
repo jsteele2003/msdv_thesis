@@ -19,11 +19,13 @@ export function renderDotsOverlay(param) {
 
 function _renderDotsLayer(param) {
 
-    const { popDots, mapMode, dotRadius} = param;
+    const { popDots, mapMode, layerOpacity} = param;
+    console.log(layerOpacity)
     const colors = DOT_COLORS;
     return new ScatterplotLayer({
         id: 'dot-plot',
         data: popDots,
+        opacity : layerOpacity,
         visible: mapMode == MapMode.DOTS,
         radiusScale: 10,
         radiusMinPixels: 0.25,
@@ -31,7 +33,10 @@ function _renderDotsLayer(param) {
         getColor: d => colors[d[2]],
         getRadius: d => 1,
         updateTriggers: {
-            getColor: colors
+            opacity: layerOpacity
+        },
+        transitions: {
+            opacity: 600,
         }
     });
 }

@@ -2,8 +2,8 @@ import React from 'react';
 import MapGL from 'react-map-gl';
 import DeckOverlay from './deckLayers/overlayContainer.js';
 import rootReducer from './reducers/index';
-import { updateMap, selectMode, loadPopPoints, loadHolc } from './actions/action';
-import { DARK_TOKEN, MAPBOX_TOKEN, MapMode, dots16_URL} from './constants/map_constants';
+import { updateMap, selectMode, loadPopPoints, loadHolc, updateOpacity, updateStyle } from './actions/action';
+import { DARK_TOKEN, MAPBOX_TOKEN, MapMode, dots16_URL, DOT_COLORS, OLD_COLORS} from './constants/map_constants';
 import { renderDotsOverlay } from './deckLayers/popDotsLayer';
 import {fromJS} from 'immutable';
 import TEST_STYLE from '../data/mapStyles/testStyle';
@@ -81,8 +81,9 @@ class DeckRoot extends React.Component {
         this.setState({mouseEntered: false});
     }
 
+    //for HOLC raster opacity setting
     _onStyleChange (mapStyle){
-        this.setState({mapStyle})
+        this.props.dispatch(updateStyle(mapStyle));
     }
 
 
@@ -91,8 +92,9 @@ class DeckRoot extends React.Component {
         this.props.dispatch(selectMode(mode))
     }
 
-    _handleSelectBase(base) {
-        this.props.dispatch(selectBase(base))
+    //for layer opacity setting
+    _handleOpacityChange(opacity) {
+        this.props.dispatch(updateOpacity(opacity))
     }
 
 
@@ -101,6 +103,7 @@ class DeckRoot extends React.Component {
         if (popDots === null) {
             return []
         }
+        console.log(this.props);
 
         //props for overlays
         const layerParams = {
@@ -127,8 +130,9 @@ class DeckRoot extends React.Component {
         const mapSelectionProps = {
             mapMode: this.props.mapMode,
             selectModeFunc: this._handleSelectMode.bind(this),
+            opacityFunc: this._handleOpacityChange.bind(this),
+            rasterSetFunc: this._onStyleChange.bind(this)
         }
-        console.log(mapStyle)
 
         return (
             <div>
@@ -142,7 +146,7 @@ class DeckRoot extends React.Component {
                     {isActiveOverlay && this._renderVisualizationOverlay()}
                 </MapGL>
 
-                <ControlPanel {...mapSelectionProps} onChange={this._onStyleChange}/>
+                <ControlPanel {...mapSelectionProps}/>
             </div>
 
 
@@ -158,9 +162,8 @@ function mapStateToProps(state) {
         holc: state.holc,
         hexes: state.hexes,
         mapMode: state.mapMode,
-        mapBase: state.mapBase,
         mapStyle: state.mapStyle,
-        dotRadius: state.dotRadius
+        layerOpacity: state.layerOpacity,
     }
 }
 const DeckApp = connect(mapStateToProps)(DeckRoot);

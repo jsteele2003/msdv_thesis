@@ -1,7 +1,13 @@
-import {UPDATE_MAP, SELECT_MODE, LOAD_HEXES, LOAD_HOLC, LOAD_POP_POINTS} from '../constants/action_types';
+import {UPDATE_MAP, UPDATE_OPACITY, SELECT_MODE, LOAD_HEXES, LOAD_HOLC, LOAD_POP_POINTS, UPDATE_STYLE} from '../constants/action_types';
 
 export const updateMap = mapViewState =>
     ({type: UPDATE_MAP, mapViewState: mapViewState});
+
+export const updateStyle = mapStyle =>
+    ({type: UPDATE_STYLE, mapStyle: mapStyle});
+
+export const updateOpacity = layerOpacity =>
+    ({type: UPDATE_OPACITY, layerOpacity: layerOpacity});
 
 export const selectMode = mode =>
     ({type: SELECT_MODE, mode: mode});
