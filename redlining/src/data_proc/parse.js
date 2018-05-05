@@ -15,7 +15,10 @@ const censusFilePath_1940='../../data/1940/1940_pop.csv';
 
 const geoFilePath= '/Users/joesteele/WebstormProjects/msdv_thesis/redlining/data/2016/pa_16_final.json';
 const geoFilePath_1940='/Users/joesteele/WebstormProjects/msdv_thesis/redlining/data/1940/1940_combinedGeo.json';
+
 const housingFilePath= './2016/pa_housing16.csv';
+const housingGeoPath= './2016/pa16HousingGeoMapped.json';
+
 
 
 /**
@@ -120,7 +123,25 @@ function genPoints(filePath, year){
     });
 }
 
-function genHexPoints(filePath){
+function genGeoJsonLayerData(filePath){
+    fs.readFile(filePath, (err, data) => {
+        if (err) throw err;
+        console.log(JSON.parse(data));
+        let rArr = [];
+        let geoData = JSON.parse(data);
+        geoData.features = geoData.features.filter(feature => DEV_ARR.includes(feature.properties['display'].split(',')[1].split(" ")[1]));
+        console.log(geoData);
+        geoData.features.forEach(function(elem){
+            let demArr = [];
+            demArr.push(parseInt(elem.properties['numWhite']));
+            demArr.push(parseInt(elem.properties['numBlack']));
+            demArr.push(parseInt(elem.properties['numAsian']));
+            demArr.push(parseInt(elem.properties['numLatino']));
+            console.log(max(demArr));
+
+        })
+
+    })
 
 }
 
@@ -153,4 +174,6 @@ let rand = function(min, max) {
 console.log(process.cwd())
 // genPoints(geoFilePath_1940, 1940);
 // genPoints(geoFilePath_2016, 2016);
-genHousingJson(housingFilePath);
+// genHousingJson(housingFilePath);
+genGeoJsonLayerData(housingGeoPath);
+
