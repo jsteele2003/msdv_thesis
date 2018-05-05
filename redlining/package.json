@@ -41,6 +41,7 @@
   "dependencies": {
     "@turf/turf": "^5.1.6",
     "@tweenjs/tween.js": "^17.2.0",
+    "d3-ease": "^1.0.3",
     "d3-request": "^1.0.6",
     "deck.gl": "^5.1.4",
     "dotenv": "^5.0.1",
