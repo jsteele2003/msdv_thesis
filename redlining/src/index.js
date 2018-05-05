@@ -5,7 +5,6 @@ import Demo from "../playground/demo";
 import DeckApp from "./deckApp";
 import style from "./index.css";
 import store from "./store/index";
-import { updateMap } from "./actions/action";
 
 window.store = store;
 // store.subscribe(() => console.log(store.getState()));

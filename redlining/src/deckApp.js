@@ -2,21 +2,15 @@ import React from 'react';
 import MapGL from 'react-map-gl';
 import DeckOverlay from './deckLayers/overlayContainer.js';
 import rootReducer from './reducers/index';
-import { updateMap, selectMode, loadPopPoints, loadHolc, updateOpacity, updateStyle } from './actions/action';
+import { updateMap, selectMode, loadPopPoints, loadOldPoints, updateOpacity, updateStyle } from './actions/action';
 import { DARK_TOKEN, MAPBOX_TOKEN, MapMode, dots16_URL, dots40_URL} from './constants/map_constants';
 import { renderDotsOverlay } from './deckLayers/popDotsLayer';
 import {fromJS} from 'immutable';
-import TEST_STYLE from '../data/mapStyles/testStyle';
 import MAP_STYLE from '../data/mapStyles/defaultMap';
-
 
 const defaultMapStyle = fromJS(MAP_STYLE);
 
-console.log(defaultMapStyle);
-
 import ControlPanel from './hud/controlPanel';
-
-import TWEEN from '@tweenjs/tween.js';
 import {connect} from "react-redux";
 
 class DeckRoot extends React.Component {
@@ -43,19 +37,18 @@ class DeckRoot extends React.Component {
         window.removeEventListener('resize', this._handleResize);
     }
 
-    loadData() {
-        fetch(dots16_URL)
-            .then(resp => resp.json())
-            .then(data => this.props.dispatch(loadPopPoints(data)));
-        fetch(dots40_URL)
-            .then(resp => resp.json())
-            .then(data => this.props.dispatch(loadPopPoints(data)));
 
+    //fetches data at path, passes to dispatch callback
+    _loadDispatch(path, onLoad){
+        fetch(path)
+            .then(resp => resp.json())
+            .then(data => onLoad(data));
     }
 
-    //dispatches fetch response to state tree
-    _loadDispatcher(path, onLoad){
-        fetch(path);
+    loadData() {
+        this._loadDispatch(dots16_URL, (data) => this.props.dispatch(loadPopPoints(data)));
+        this._loadDispatch(dots40_URL, (data) => this.props.dispatch(loadOldPoints(data)));
+
     }
 
     _handleResize() {
@@ -77,13 +70,6 @@ class DeckRoot extends React.Component {
         }
     }
 
-    _onMouseEnter() {
-        this.setState({mouseEntered: true});
-    }
-
-    _onMouseLeave() {
-        this.setState({mouseEntered: false});
-    }
 
     //for HOLC raster opacity setting
     _onStyleChange (mapStyle){
@@ -103,10 +89,11 @@ class DeckRoot extends React.Component {
 
 
     _renderVisualizationOverlay() {
-        const { popDots, hexes, holc, mapMode } = this.props;
+        const { popDots, oldDots, hexes, holc, mapMode } = this.props;
         if (popDots === null) {
             return []
         }
+
         console.log(this.props);
 
         //props for overlays
@@ -127,7 +114,8 @@ class DeckRoot extends React.Component {
     }
 
     render() {
-        const {mapViewState, mapMode, mapBase, mapStyle} = this.props;
+        const {mapViewState, mapMode, mapStyle} = this.props;
+        console.log(this.props);
         const { width, height} = this.state;
         const isActiveOverlay = mapMode !== MapMode.NONE;
 
@@ -163,6 +151,7 @@ function mapStateToProps(state) {
     return {
         mapViewState: state.mapViewState,
         popDots: state.popDots,
+        oldDots: state.oldDots,
         holc: state.holc,
         hexes: state.hexes,
         mapMode: state.mapMode,

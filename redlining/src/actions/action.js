@@ -1,4 +1,4 @@
-import {UPDATE_MAP, UPDATE_OPACITY, SELECT_MODE, LOAD_HEXES, LOAD_HOLC, LOAD_POP_POINTS, UPDATE_STYLE} from '../constants/action_types';
+import {UPDATE_MAP, UPDATE_OPACITY, SELECT_MODE, LOAD_HEXES, LOAD_HOLC, LOAD_OLD_POINTS, LOAD_POP_POINTS, UPDATE_STYLE} from '../constants/action_types';
 
 export const updateMap = mapViewState =>
     ({type: UPDATE_MAP, mapViewState: mapViewState});
@@ -20,6 +20,10 @@ export const selectYear = year =>
 
 export function loadPopPoints(points) {
     return {type: LOAD_POP_POINTS, points: points};
+}
+
+export function loadOldPoints(points) {
+    return {type: LOAD_OLD_POINTS, points: points};
 }
 
 export function loadHolc(polygons) {

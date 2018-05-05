@@ -9,6 +9,8 @@ export const dots16_URL = '../data/2016/pennDots.json';
 
 export const dots40_URL = '../data/1940/1940Dots.json';
 
+export const dots40Full_URL = '../data/1940/1940Dots.json';
+
 export const holc_URL = '../data/holc/holc.geojson';
 
 export const phil_HOLC_ID = "joesteele-6a5xs2ot";

@@ -14,7 +14,8 @@ const censusFilePath_2016='../../data/2016/pa_census16_obj.csv';
 const censusFilePath_1940='../../data/1940/1940_pop.csv';
 
 const geoFilePath= '/Users/joesteele/WebstormProjects/msdv_thesis/redlining/data/2016/pa_16_final.json';
-const geoFilePath_1940='../../data/1940/1940_combinedGeo.json';
+const geoFilePath_1940='/Users/joesteele/WebstormProjects/msdv_thesis/redlining/data/1940/1940_combinedGeo.json';
+const housingFilePath= './2016/pa_housing16.csv';
 
 
 /**
@@ -115,11 +116,32 @@ function genPoints(filePath, year){
             }
         })
         // console.log(rArr);
-        fs.writeFile("../data/" + year + "/" + year + "Dots.json", JSON.stringify(rArr))
+        fs.writeFile("../data/" + year + "/" + year + "DotsTest.json", JSON.stringify(rArr))
     });
 }
 
 function genHexPoints(filePath){
+
+}
+
+function genHousingJson(filePath){
+    let rJson = [];
+
+    csvjs()
+        .fromFile(filePath)
+        .on('json', (jsonObj) => {
+            console.log(jsonObj);
+            let rObj = {
+                id: jsonObj.GEO.id2,
+                housingValue: jsonObj.Properties["houseValue"],
+            };
+            rJson.push(rObj)
+        })
+        .on('done', (error) => {
+            // console.log(error);
+            console.log(rJson);
+            fs.writeFile("./2016/paHousing_stats16.json", JSON.stringify(rJson));
+        })
 
 }
 
@@ -129,4 +151,6 @@ let rand = function(min, max) {
 };
 // genJson(censusFilePath_1940, 1940);
 console.log(process.cwd())
-genPoints(geoFilePath, 2016);
+// genPoints(geoFilePath_1940, 1940);
+// genPoints(geoFilePath_2016, 2016);
+genHousingJson(housingFilePath);

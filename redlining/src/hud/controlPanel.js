@@ -31,7 +31,7 @@ class ControlRoot extends PureComponent {
     _handleWipeEnter(c){
         // console.log(c)
         if(c.previousPosition == 'below'){
-            this.setState({width: '33%'});
+            this.setState({width: '40%'});
 
             this.props.rasterSetFunc(rasterMapStyle);
 
@@ -148,7 +148,7 @@ class ControlRoot extends PureComponent {
                                 <div className='selection'>
                                     <input type="checkbox" checked={mapMode === MapMode.DOTS} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.DOTS)}}/>
                                     Population Dot Map
-                                    <input type="checkbox" checked={mapMode === MapMode.HOLC} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.HOLC)}}/>
+                                    <input type="checkbox" checked={mapMode === MapMode.OLD} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.OLD)}}/>
                                     HOLC Borders
                                     <input type="checkbox" checked={mapMode === MapMode.HEXES} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.HEXES)}}/>
                                     Income Hex Grid

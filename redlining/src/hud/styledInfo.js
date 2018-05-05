@@ -15,7 +15,7 @@ export const ControlContainer = styled.div`
     right: 0;
     height: 100vh;
     box-shadow: 10px 5px 5px black;
-    transition: width 0.75s ease-in-out;
+    transition: width 1s ease-in-out;
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#b3bead',GradientType=0 );
     -webkit-font-smoothing: antialiased;
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);

@@ -1,5 +1,5 @@
-import { MapMode, MapBase, DOT_COLORS, OLD_COLORS} from '../constants/map_constants'
-import {UPDATE_MAP, SELECT_MODE, LOAD_POP_POINTS, LOAD_HOLC,LOAD_HEXES, UPDATE_STYLE, UPDATE_OPACITY} from '../constants/action_types'
+import { MapMode, DOT_COLORS, OLD_COLORS} from '../constants/map_constants'
+import {UPDATE_MAP, SELECT_MODE, LOAD_POP_POINTS, LOAD_OLD_POINTS, LOAD_HOLC,LOAD_HEXES, UPDATE_STYLE, UPDATE_OPACITY} from '../constants/action_types'
 import MAP_STYLE from '../../data/mapStyles/philMap'
 import {fromJS} from "immutable";
 
@@ -16,11 +16,23 @@ const PH_LOCATION = {
     latitude: 39.9526,
 };
 
+const START_LOCATION = {
+    longitude: -75.07386546961281,
+    latitude: 39.94791260958592,
+};
+
+const HOLC_LOCATION = {
+    longitude: -75.07386546961281,
+    latitude: 39.94791260958592,
+    pitch: 0,
+    zoom: 9
+};
+
 
 const INITIAL_STATE = {
     mapViewState: {
-        latitude: PH_LOCATION.latitude,
-        longitude: PH_LOCATION.longitude,
+        latitude: START_LOCATION.latitude,
+        longitude: START_LOCATION.longitude,
         zoom: 11,
         maxZoom: 16,
         pitch: 60,
@@ -54,8 +66,9 @@ const rootReducer = (state = INITIAL_STATE, action) => {switch (action.type) {
     case LOAD_POP_POINTS:
         const popDots = action.points;
         return {...state, popDots: popDots};
-    case LOAD_HOLC:
-        return [];
+    case LOAD_OLD_POINTS:
+        const oldDots = action.points;
+        return {...state, oldDots: oldDots};
     default:
         return state;
 }};
