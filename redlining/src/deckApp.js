@@ -8,7 +8,7 @@ import {
 } from './actions/action';
 import { DARK_TOKEN, MAPBOX_TOKEN, MapMode, dots16_URL, dots40_URL, poly_URL} from './constants/map_constants';
 import { renderDotsOverlay } from './deckLayers/popDotsLayer';
-import { renderPolyOverlay } from './deckLayers/polyGeoLayer';
+import PolyOverlay from './deckLayers/polyGeoLayer';
 
 import {fromJS} from 'immutable';
 import MAP_STYLE from '../data/mapStyles/defaultMap';
@@ -111,10 +111,10 @@ class DeckRoot extends React.Component {
         }
 
         return (
-            //each will evaluate to expression to render when true
+            //each will evaluate to expression to render when MODE passes
             <div>
                 { renderDotsOverlay(layerParams) }
-                { renderPolyOverlay(layerParams) }
+                <PolyOverlay {...layerParams} />
             </div>
         )
     }

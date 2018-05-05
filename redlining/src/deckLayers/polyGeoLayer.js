@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {Component} from 'react';
 import DeckGL, {GeoJsonLayer} from 'deck.gl';
-import {MapMode, DOT_COLORS} from '../constants/map_constants';
+import {MapMode, DOT_COLORS, incMax, incMin} from '../constants/map_constants';
 
 
 const LIGHT_SETTINGS = {
@@ -13,25 +13,30 @@ const LIGHT_SETTINGS = {
 };
 
 
-export function renderPolyOverlay(param) {
-    const { mapViewState } = param.props;
-    const { width, height } = param.state;
+export default class PolyOverlay extends Component{
+    constructor(props) {
+        super(props);
+        console.log(props)
+    }
 
 
 
+
+    render(){
+        const { mapViewState } = this.props.props;
+        const { width, height } = this.props.state;
     return (
-
-
         <DeckGL
             id="poly-overlay"
             width={width}
             height={height}
             {...mapViewState}
             debug
-            layers={[_renderPolyLayer(param.props)]}
+            layers={[_renderPolyLayer(this.props.props)]}
         />
 
     )
+    }
 }
 
 function _renderPolyLayer(param) {
@@ -44,13 +49,13 @@ function _renderPolyLayer(param) {
         id: 'poly-map',
         data: polygons,
         visible: (mapMode == MapMode.POLYHS || mapMode == MapMode.POLYINC),
-        opacity: 0.35,
+        opacity: 0.25,
         stroked: false,
         filled: true,
         extruded: true,
         wireframe: true,
         fp64: false,
-        getElevation: f => f.properties.median_income / 10,
+        getElevation: f => (f.properties.median_income - incMin) / 10,
         getFillColor: f => DOT_COLORS[f.properties.majorityDemo],
         getLineColor: f => [255, 255, 255],
         lightSettings: LIGHT_SETTINGS,
