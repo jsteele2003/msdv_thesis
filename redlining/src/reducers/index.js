@@ -1,5 +1,8 @@
 import { MapMode, DOT_COLORS, OLD_COLORS} from '../constants/map_constants'
-import {UPDATE_MAP, SELECT_MODE, LOAD_POP_POINTS, LOAD_OLD_POINTS, LOAD_HOLC,LOAD_HEXES, UPDATE_STYLE, UPDATE_OPACITY} from '../constants/action_types'
+import {
+    UPDATE_MAP, SELECT_MODE, LOAD_POP_POINTS, LOAD_OLD_POINTS, UPDATE_STYLE, UPDATE_OPACITY,
+    LOAD_POLY
+} from '../constants/action_types'
 import MAP_STYLE from '../../data/mapStyles/philMap'
 import {fromJS} from "immutable";
 
@@ -34,9 +37,10 @@ const INITIAL_STATE = {
         latitude: START_LOCATION.latitude,
         longitude: START_LOCATION.longitude,
         zoom: 11,
+        minZoom: 5,
         maxZoom: 16,
         pitch: 60,
-        useDevicePixels: false,
+        useDevicePixels: true,
         bearing: 0
     },
     dotRadius: 1,
@@ -46,7 +50,7 @@ const INITIAL_STATE = {
     popDots: null,
     oldDots: null,
     holc: null,
-    hexes: null,
+    polygons: null,
     mapMode: MapMode.NONE,
     mapStyle : defaultMapStyle
 };
@@ -69,6 +73,9 @@ const rootReducer = (state = INITIAL_STATE, action) => {switch (action.type) {
     case LOAD_OLD_POINTS:
         const oldDots = action.points;
         return {...state, oldDots: oldDots};
+    case LOAD_POLY:
+        const polygons = action.polygons;
+        return {...state, polygons: polygons};
     default:
         return state;
 }};

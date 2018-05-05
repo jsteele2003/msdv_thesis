@@ -150,8 +150,8 @@ class ControlRoot extends PureComponent {
                                     Population Dot Map
                                     <input type="checkbox" checked={mapMode === MapMode.OLD} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.OLD)}}/>
                                     HOLC Borders
-                                    <input type="checkbox" checked={mapMode === MapMode.HEXES} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.HEXES)}}/>
-                                    Income Hex Grid
+                                    <input type="checkbox" checked={mapMode === MapMode.POLYINC} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.POLYINC)}}/>
+                                    Census Divides
                                 </div>
 
                                 <div className='title-label'>Mouse Selection</div>
@@ -191,8 +191,7 @@ function mapStateToProps(state) {
     return {
         mapViewState: state.mapViewState,
         popDots: state.popDots,
-        holc: state.holc,
-        hexes: state.hexes,
+        polygons: state.polygons,
         mapMode: state.mapMode,
         mapBase: state.mapBase,
         mapStyle: state.mapStyle

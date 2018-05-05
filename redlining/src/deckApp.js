@@ -2,9 +2,14 @@ import React from 'react';
 import MapGL from 'react-map-gl';
 import DeckOverlay from './deckLayers/overlayContainer.js';
 import rootReducer from './reducers/index';
-import { updateMap, selectMode, loadPopPoints, loadOldPoints, updateOpacity, updateStyle } from './actions/action';
-import { DARK_TOKEN, MAPBOX_TOKEN, MapMode, dots16_URL, dots40_URL} from './constants/map_constants';
+import {
+    updateMap, selectMode, loadPopPoints, loadOldPoints, updateOpacity, updateStyle,
+    loadPoly
+} from './actions/action';
+import { DARK_TOKEN, MAPBOX_TOKEN, MapMode, dots16_URL, dots40_URL, poly_URL} from './constants/map_constants';
 import { renderDotsOverlay } from './deckLayers/popDotsLayer';
+import { renderPolyOverlay } from './deckLayers/polyGeoLayer';
+
 import {fromJS} from 'immutable';
 import MAP_STYLE from '../data/mapStyles/defaultMap';
 
@@ -48,6 +53,8 @@ class DeckRoot extends React.Component {
     loadData() {
         this._loadDispatch(dots16_URL, (data) => this.props.dispatch(loadPopPoints(data)));
         this._loadDispatch(dots40_URL, (data) => this.props.dispatch(loadOldPoints(data)));
+        this._loadDispatch(poly_URL, (data) => this.props.dispatch(loadPoly(data)));
+
 
     }
 
@@ -107,8 +114,7 @@ class DeckRoot extends React.Component {
             //each will evaluate to expression to render when true
             <div>
                 { renderDotsOverlay(layerParams) }
-                { mapMode === MapMode.HEXES && _renderHexesOverlay(layerParams) }
-                { mapMode === MapMode.HOLC && _renderGeoOverlay(layerParams) }
+                { renderPolyOverlay(layerParams) }
             </div>
         )
     }
@@ -152,8 +158,7 @@ function mapStateToProps(state) {
         mapViewState: state.mapViewState,
         popDots: state.popDots,
         oldDots: state.oldDots,
-        holc: state.holc,
-        hexes: state.hexes,
+        polygons: state.polygons,
         mapMode: state.mapMode,
         mapStyle: state.mapStyle,
         layerOpacity: state.layerOpacity,

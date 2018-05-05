@@ -127,19 +127,29 @@ function genGeoJsonLayerData(filePath){
     fs.readFile(filePath, (err, data) => {
         if (err) throw err;
         console.log(JSON.parse(data));
-        let rArr = [];
+        let hvArr = [];
+        let incomeArr = [];
         let geoData = JSON.parse(data);
         geoData.features = geoData.features.filter(feature => DEV_ARR.includes(feature.properties['display'].split(',')[1].split(" ")[1]));
-        console.log(geoData);
+        // console.log(geoData);
         geoData.features.forEach(function(elem){
             let demArr = [];
             demArr.push(parseInt(elem.properties['numWhite']));
             demArr.push(parseInt(elem.properties['numBlack']));
             demArr.push(parseInt(elem.properties['numAsian']));
             demArr.push(parseInt(elem.properties['numLatino']));
-            console.log(max(demArr));
+            hvArr.push(elem.properties['housingValue']);
+            (elem.properties['median_income'] != "-" ? incomeArr.push(parseInt(elem.properties['median_income'])) : elem.properties['median_income'] = 0);
 
+            elem.properties['majorityDemo'] = demArr.indexOf(Math.max(...demArr))
+            delete elem.id;
         })
+
+        // console.log(geoData.features)
+        // console.log("housing min:" + Math.min(...hvArr) + "housing max:" + Math.max(...hvArr));
+        console.log("inc min:" + Math.min(...incomeArr) + "inc max:" + Math.max(...incomeArr));
+        fs.writeFile("./2016/deckGeo.json", JSON.stringify(geoData));
+
 
     })
 
