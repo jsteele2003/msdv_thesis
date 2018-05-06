@@ -13,7 +13,7 @@ const LIGHT_SETTINGS = {
     numberOfLights: 3
 };
 
-const elevationScale = {min: 0.1, max: 1};
+const elevationScale = {min: 0.01, max: 1};
 
 
 export default class PolyOverlay extends PureComponent{
@@ -21,10 +21,59 @@ export default class PolyOverlay extends PureComponent{
         super(props);
         console.log(props);
 
+        this.startAnimationTimer = null;
+        this.intervalTimer = null;
+
         this.state = {
             elevationScale: elevationScale.min
         };
 
+        this._startAnimate = this._startAnimate.bind(this);
+        this._animateHeight = this._animateHeight.bind(this);
+
+    }
+
+    componentDidMount() {
+        this._animate();
+    }
+
+
+    //unsafe, should look for alternative
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.props.mapMode != this.props.props.mapMode) {
+            this.state = {
+                elevationScale: elevationScale.min
+            };
+
+            this._animate();
+        }
+    }
+
+    componentWillUnmount() {
+        this._stopAnimate();
+    }
+
+    _animate() {
+        this._stopAnimate();
+
+        this.startAnimationTimer = window.setTimeout(this._startAnimate, 1000);
+    }
+
+    _startAnimate() {
+        this.intervalTimer = window.setInterval(this._animateHeight, 20);
+    }
+
+    _stopAnimate() {
+        window.clearTimeout(this.startAnimationTimer);
+        window.clearTimeout(this.intervalTimer);
+    }
+
+    _animateHeight() {
+        if (this.state.elevationScale > elevationScale.max) {
+            this._stopAnimate();
+        } else {
+            this.setState({elevationScale: this.state.elevationScale + 0.01});
+        }
     }
 
 
@@ -39,11 +88,12 @@ export default class PolyOverlay extends PureComponent{
             opacity: 0.25,
             stroked: false,
             filled: true,
+            elevationScale : this.state.elevationScale,
             extruded: true,
             wireframe: true,
             autoHighlight: true,
             fp64: false,
-            getElevation: f => (mapMode == MapMode.POLYINC ? (((f.properties.median_income - incMin) / 10) * polyScaler): (((f.properties.housingValue - houseMin) / 100) * polyScaler)),
+            getElevation: f => (mapMode == MapMode.POLYINC ? ((f.properties.median_income - incMin) / 10): ((f.properties.housingValue - houseMin) / 100)),
             getFillColor: f => DOT_COLORS[f.properties.majorityDemo],
             getLineColor: f => [255, 255, 255],
             updateTriggers:{

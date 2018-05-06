@@ -18,6 +18,7 @@ const geoFilePath_1940='/Users/joesteele/WebstormProjects/msdv_thesis/redlining/
 
 const housingFilePath= './2016/pa_housing16.csv';
 const housingGeoPath= './2016/pa16HousingGeoMapped.json';
+const evictPath = './2016/pa_eviction_tracts.geojson';
 
 
 
@@ -180,9 +181,10 @@ function genGeoJsonIncLayerData(filePath){
 
 }
 
+function genEvict(filePath){
 
 
-
+}
 
 function genHousingJson(filePath){
     let rJson = [];

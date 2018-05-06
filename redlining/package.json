@@ -56,6 +56,7 @@
     "react-polygon": "^0.1.0",
     "react-scroll": "^1.7.9",
     "react-viewport-slider": "^1.0.0",
+    "react-vis": "^1.9.3",
     "react-waypoint": "^8.0.1",
     "redux-map-gl": "^0.1.0",
     "scss": "^0.2.4",
