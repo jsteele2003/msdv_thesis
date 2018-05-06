@@ -8,6 +8,9 @@ import Waypoint from 'react-waypoint';
 import MAP_STYLE from '../../data/mapStyles/philMapRaster'
 import DEF_STYLE from '../../data/mapStyles/philMap'
 import {fromJS} from "immutable";
+import * as d3 from "d3-ease";
+import {LinearInterpolator, FlyToInterpolator} from 'react-map-gl';
+
 
 const rasterMapStyle = fromJS(MAP_STYLE);
 const defaultMapStyle = fromJS(DEF_STYLE);
@@ -27,6 +30,18 @@ class ControlRoot extends PureComponent {
         };
     }
 
+    goTo_NY (){
+        const updatedView = {
+        latitude: 40.70237278,
+        longitude: -74.01143532,
+        zoom: 14,
+        transitionDuration: 5000,
+        transitionInterpolator: new FlyToInterpolator(),
+        transitionEasing: d3.easeCubic
+    };
+        this.props.viewUpdateFunc(updatedView);
+    };
+
 
     _handleWipeEnter(c){
         // console.log(c)
@@ -34,6 +49,7 @@ class ControlRoot extends PureComponent {
             this.setState({width: '35%'});
 
             this.props.rasterSetFunc(rasterMapStyle);
+            this.goTo_NY();
 
             this.setState({visibility: 'hidden'});
             this.setState({background: '-webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%'});
@@ -96,20 +112,23 @@ class ControlRoot extends PureComponent {
 
                             {/*hacky v offset*/}
                             <Row style={{ height: '30%'}}></Row>
+
                             <Row style={{ height: '70%'}}>
                                 <Col xs={8} xsOffset={2}>
 
                                     <div className='textContainer'>
                                         <h1 className="text-center">
-                                            Moving the Line
+                                            MOVING THE LINE
                                         </h1>
                                         <h3 className="text-center">
-                                            Shifting Borders in American Cities
+                                            SHIFTING BORDERS IN AMERICAN CITIES
                                         </h3>
                                     </div>
                                 </Col>
                             </Row>
+
                             <Row style={{ height: '30%'}}></Row>
+
                             <Row style={{ height: '70%'}}>
                                 <Col xs={8} xsOffset={2}>
                                     <p style={{fontSize: '2em'}} >
@@ -117,7 +136,9 @@ class ControlRoot extends PureComponent {
                                     </p>
                                 </Col>
                             </Row>
+
                             <Row style={{ height: '30%'}}></Row>
+
                             <Row style={{ height: '70%'}}>
                                 <Col xs={8} xsOffset={2}>
                                     <p style={{fontSize: '2em'}} >
@@ -125,7 +146,9 @@ class ControlRoot extends PureComponent {
                                     </p>
                                 </Col>
                             </Row>
+
                             <Row style={{ height: '30%'}}></Row>
+
                             <Row style={{ height: '70%'}}>
                                 <Col xs={8} xsOffset={2}>
                                     <p style={{fontSize: '2em'}} >
@@ -133,7 +156,9 @@ class ControlRoot extends PureComponent {
                                     </p>
                                 </Col>
                             </Row>
+
                             <Row style={{ height: '30%'}}></Row>
+
                             <Row style={{ height: '70%'}}>
                                 <Col xs={6} xsOffset={3} xsHidden={true}>
                                         <p style={{
@@ -145,12 +170,22 @@ class ControlRoot extends PureComponent {
                                         </p>
                                 </Col>
                             </Row>
+
                             <Row style={{ height: '80%'}}>
                             </Row>
-                            <Row style={{height:'30%'}}>
+                            <Row style={{ height: '30%'}}>
                                 <Waypoint
                                     onEnter={(evt) => this._handleWipeEnter(evt)} onLeave={(evt) => this._handleWipeLeave(evt)}
                                 />
+                                <Col xs={8} xsOffset={2}>
+                                    <p style={{fontSize: '2em'}} >
+                                        "How Happy are Those <br></br> Whose Walls Already Rise"
+                                    </p>
+                                </Col>
+                            </Row>
+
+                            <Row style={{height:'30%'}}>
+
                                 <Col xs={12}>
                                 <div className='title-label'>Mode Selection</div>
                                 <div className='selection'>

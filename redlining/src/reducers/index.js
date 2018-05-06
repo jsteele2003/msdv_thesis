@@ -1,10 +1,13 @@
 import { MapMode, DOT_COLORS, OLD_COLORS} from '../constants/map_constants'
+import {LinearInterpolator, FlyToInterpolator} from 'react-map-gl';
 import {
     UPDATE_MAP, SELECT_MODE, LOAD_POP_POINTS, LOAD_OLD_POINTS, UPDATE_STYLE, UPDATE_SCALE, UPDATE_OPACITY,
     LOAD_POLY, LOAD_HSPOLY
 } from '../constants/action_types'
 import MAP_STYLE from '../../data/mapStyles/philMap'
 import {fromJS} from "immutable";
+import * as d3 from "d3-ease";
+
 
 const defaultMapStyle = fromJS(MAP_STYLE);
 
@@ -12,6 +15,10 @@ const defaultMapStyle = fromJS(MAP_STYLE);
 const NY_LOCATION = {
     latitude: 40.70237278,
     longitude: -74.01143532,
+    zoom: 14,
+    transitionDuration: 5000,
+    transitionInterpolator: new FlyToInterpolator(),
+    transitionEasing: d3.easeCubic
 };
 
 const PH_LOCATION = {
@@ -62,7 +69,6 @@ const rootReducer = (state = INITIAL_STATE, action) => {switch (action.type) {
         //spread notation: returns shallow copy of previous state, with new prop
         return {...state, mapViewState: action.mapViewState};
     case UPDATE_STYLE:
-        console.log(action);
         return {...state, mapStyle: action.mapStyle};
     case UPDATE_OPACITY:
         return {...state, layerOpacity: action.layerOpacity};

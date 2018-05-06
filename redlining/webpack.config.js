@@ -3,10 +3,11 @@ const webpack = require('webpack');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+
 
 
 module.exports = {
-  devtool: "#eval-source-map",
   module: {
       rules: [
           {
@@ -39,6 +40,12 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "[name].css",
             chunkFilename: "[id].css"
-        })
+        }),
+        // new UglifyJsPlugin(),
+        // new webpack.DefinePlugin({
+        //     "process.env": {
+        //         NODE_ENV: JSON.stringify("production")
+        //     }
+        // })
     ]
 };

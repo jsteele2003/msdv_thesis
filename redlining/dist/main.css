@@ -1,35 +1,45 @@
+html {
+    overflow-y: scroll;
+}
+
 body {
-    margin: 0;
     background: #000;
 }
 
-.checkbox {
-    color: #333;
-    font: Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    text-shadow: 0px 1px grey;
-    text-align: center;
+/*.control-panel {*/
+    /*position: absolute;*/
+    /*-webkit-transition: width 2s; !* Safari *!*/
+    /*top: 0;*/
+    /*right: 0;*/
+    /*height: 100%;*/
+    /*width:100%;*/
+    /*background: -webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #ffa7a0 100%);*/
+    /*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#b3bead',GradientType=0 );*/
+    /*-webkit-font-smoothing: antialiased;*/
+    /*box-shadow: 0 2px 4px rgba(0,0,0,0.3);*/
+    /*font-size: 13px;*/
+    /*line-height: 2;*/
+    /*color: #6b6b76;*/
+    /*text-transform: uppercase;*/
+    /*outline: none;*/
+    /*filter: alpha(opacity=75);*/
+    /*opacity: 0.75;*/
+/*}*/
+
+h1, h2, h3{
+    font-family: Bebas;
+}
+p {
+    font-family: Garamond;
+    text-transform: lowercase;
 }
 
-.checkbox {
-    width: 28px;
-    height: 28px;
-    background: #fcfff4;
 
-    background: -webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
-    background: -moz-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
-    background: -o-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
-    background: -ms-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
-    background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#b3bead',GradientType=0 );
-    margin: 20px;
-
-    -webkit-border-radius: 50px;
-    -moz-border-radius: 50px;
-    border-radius: 50px;
-
-    -webkit-box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
-    -moz-box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
-    box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
-    position: relative;
+p:first-letter {
+    text-transform: capitalize;
 }
+/*.control-panel:hover {*/
+    /*width: 33%;*/
+/*}*/
+
+

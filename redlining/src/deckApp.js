@@ -21,21 +21,21 @@ const defaultMapStyle = fromJS(MAP_STYLE);
 import ControlPanel from './hud/controlPanel';
 import {connect} from "react-redux";
 
-class DeckRoot extends React.Component {
+class DeckRoot extends React.PureComponent {
     constructor(props) {
         super(props);
 
         //window viewport state, not needed in redux tree, only for resize handling
         this.state = {
             width: window.innerWidth,
-            height: window.innerHeight,
-            mousePosition: [0, 0]
+            height: window.innerHeight
         };
 
-        this.loadData();
+
     }
 
     componentDidMount() {
+        this.loadData();
         window.addEventListener('resize', this._handleResize.bind(this));
         this._handleResize();
     }
@@ -57,8 +57,6 @@ class DeckRoot extends React.Component {
         this._loadDispatch(dots16_URL, (data) => this.props.dispatch(loadPopPoints(data)));
         this._loadDispatch(dots40_URL, (data) => this.props.dispatch(loadOldPoints(data)));
         this._loadDispatch(poly_URL, (data) => this.props.dispatch(loadPoly(data)));
-        this._loadDispatch(hsPoly_URL, (data) => this.props.dispatch(loadHsPoly(data)));
-
     }
 
     _handleResize() {
@@ -98,6 +96,7 @@ class DeckRoot extends React.Component {
     }
 
 
+
     _renderVisualizationOverlay() {
         const { popDots} = this.props;
         if (popDots === null) {
@@ -132,7 +131,8 @@ class DeckRoot extends React.Component {
             mapMode: this.props.mapMode,
             selectModeFunc: this._handleSelectMode.bind(this),
             scaleFunc: this._handleScaleChange.bind(this),
-            rasterSetFunc: this._onStyleChange.bind(this)
+            rasterSetFunc: this._onStyleChange.bind(this),
+            viewUpdateFunc: this._handleViewportChanged.bind(this)
         }
 
         return (
@@ -142,6 +142,7 @@ class DeckRoot extends React.Component {
                     width={width}
                     height={height}
                     mapStyle={mapStyle}
+                    perspectiveEnabled
                     { ...mapViewState }
                     onViewportChange={this._handleViewportChanged.bind(this)}>
                     {isActiveOverlay && this._renderVisualizationOverlay()}
@@ -162,13 +163,11 @@ function mapStateToProps(state) {
         popDots: state.popDots,
         oldDots: state.oldDots,
         polygons: state.polygons,
-        hsPolygons: state.hsPolygons,
         mapMode: state.mapMode,
         mapStyle: state.mapStyle,
         layerOpacity: state.layerOpacity,
         pCol: state.pCol,
         oCol: state.oCol,
-        polyScaler: state.polyScaler
     }
 }
 const DeckApp = connect(mapStateToProps)(DeckRoot);

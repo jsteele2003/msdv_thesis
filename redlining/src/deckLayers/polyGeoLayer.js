@@ -5,11 +5,11 @@ import * as d3 from "d3-ease";
 
 
 const LIGHT_SETTINGS = {
-    lightsPosition: [ -70.1652, 30.739968, 800, -3.807751, 54.104682, 800,  70.1652, -30.739968, 800],
+    lightsPosition: [ -70.1652, -30.739968, 800, -3.807751, 54.104682, 800],
     ambientRatio: 0.4,
     diffuseRatio: 0.6,
     specularRatio: 0.2,
-    lightsStrength: [0.8, 0.0, 0.8, 0.0,  0.8, 0.0],
+    lightsStrength: [0.8, 0.0, 0.8, 0.0],
     numberOfLights: 3
 };
 
@@ -41,10 +41,7 @@ export default class PolyOverlay extends PureComponent{
     //unsafe, should look for alternative
     componentWillReceiveProps(nextProps) {
         if (nextProps.props.mapMode != this.props.props.mapMode) {
-            this.state = {
-                elevationScale: elevationScale.min
-            };
-
+            this.setState({elevationScale: elevationScale.min});
             this._animate();
         }
     }
@@ -72,18 +69,17 @@ export default class PolyOverlay extends PureComponent{
         if (this.state.elevationScale > elevationScale.max) {
             this._stopAnimate();
         } else {
-            this.setState({elevationScale: this.state.elevationScale + 0.01});
+            this.setState({elevationScale: this.state.elevationScale + 0.005});
         }
     }
 
 
     render(){
-        const { polygons, hsPolygons, mapMode, mapViewState, polyScaler} = this.props.props;
+        const { polygons, mapMode, mapViewState} = this.props.props;
         const { width, height } = this.props.state;
-        console.log(hsPolygons);
         const layer = new GeoJsonLayer({
             id: 'poly-map',
-            data: (mapMode == MapMode.POLYINC ? polygons : hsPolygons),
+            data: polygons,
             visible: (mapMode == MapMode.POLYHS || mapMode == MapMode.POLYINC),
             opacity: 0.25,
             stroked: false,
@@ -107,8 +103,6 @@ export default class PolyOverlay extends PureComponent{
             },
             lightSettings: LIGHT_SETTINGS
         });
-
-        console.log(layer);
 
         return (
             <DeckGL

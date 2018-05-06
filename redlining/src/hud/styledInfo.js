@@ -20,7 +20,6 @@ export const ControlContainer = styled.div`
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     line-height: 2;
     color: #6b6b76;
-    text-transform: uppercase;
     outline: none;
     opacity: 0.55;
 `;

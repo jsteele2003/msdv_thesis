@@ -11,7 +11,7 @@ export const dots40_URL = '../data/1940/1940Dots.json';
 
 export const dots40Full_URL = '../data/1940/1940Dots.json';
 
-export const poly_URL = '../data/2016/deckInc.json';
+export const poly_URL = '../data/2016/deckGeo.json';
 
 export const hsPoly_URL = '../data/2016/deckHS.json';
 
