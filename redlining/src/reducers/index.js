@@ -1,7 +1,7 @@
 import { MapMode, DOT_COLORS, OLD_COLORS} from '../constants/map_constants'
 import {
-    UPDATE_MAP, SELECT_MODE, LOAD_POP_POINTS, LOAD_OLD_POINTS, UPDATE_STYLE, UPDATE_OPACITY,
-    LOAD_POLY
+    UPDATE_MAP, SELECT_MODE, LOAD_POP_POINTS, LOAD_OLD_POINTS, UPDATE_STYLE, UPDATE_SCALE, UPDATE_OPACITY,
+    LOAD_POLY, LOAD_HSPOLY
 } from '../constants/action_types'
 import MAP_STYLE from '../../data/mapStyles/philMap'
 import {fromJS} from "immutable";
@@ -44,6 +44,7 @@ const INITIAL_STATE = {
         bearing: 0
     },
     dotRadius: 1,
+    polyScaler: 0.1,
     pCol : DOT_COLORS,
     oCol : OLD_COLORS,
     layerOpacity: 1,
@@ -51,6 +52,7 @@ const INITIAL_STATE = {
     oldDots: null,
     holc: null,
     polygons: null,
+    hsPolygons: null,
     mapMode: MapMode.NONE,
     mapStyle : defaultMapStyle
 };
@@ -64,6 +66,8 @@ const rootReducer = (state = INITIAL_STATE, action) => {switch (action.type) {
         return {...state, mapStyle: action.mapStyle};
     case UPDATE_OPACITY:
         return {...state, layerOpacity: action.layerOpacity};
+    case UPDATE_SCALE:
+        return {...state, polyScaler: action.polyScaler};
     case SELECT_MODE:
         const mapViewState = state.mapViewState;
         return {...state, mapMode: action.mode};
@@ -76,6 +80,9 @@ const rootReducer = (state = INITIAL_STATE, action) => {switch (action.type) {
     case LOAD_POLY:
         const polygons = action.polygons;
         return {...state, polygons: polygons};
+    case LOAD_HSPOLY:
+        const hsPolygons = action.hsPolygons;
+        return {...state, hsPolygons: hsPolygons};
     default:
         return state;
 }};

@@ -3,10 +3,13 @@ import MapGL from 'react-map-gl';
 import DeckOverlay from './deckLayers/overlayContainer.js';
 import rootReducer from './reducers/index';
 import {
-    updateMap, selectMode, loadPopPoints, loadOldPoints, updateOpacity, updateStyle,
-    loadPoly
+    updateMap, selectMode, loadPopPoints, loadOldPoints, updateScale, updateStyle,
+    loadPoly, loadHsPoly
 } from './actions/action';
-import { DARK_TOKEN, MAPBOX_TOKEN, MapMode, dots16_URL, dots40_URL, poly_URL} from './constants/map_constants';
+import {
+    DARK_TOKEN, MAPBOX_TOKEN, MapMode, dots16_URL, dots40_URL, poly_URL,
+    hsPoly_URL
+} from './constants/map_constants';
 import { renderDotsOverlay } from './deckLayers/popDotsLayer';
 import PolyOverlay from './deckLayers/polyGeoLayer';
 
@@ -54,7 +57,7 @@ class DeckRoot extends React.Component {
         this._loadDispatch(dots16_URL, (data) => this.props.dispatch(loadPopPoints(data)));
         this._loadDispatch(dots40_URL, (data) => this.props.dispatch(loadOldPoints(data)));
         this._loadDispatch(poly_URL, (data) => this.props.dispatch(loadPoly(data)));
-
+        this._loadDispatch(hsPoly_URL, (data) => this.props.dispatch(loadHsPoly(data)));
 
     }
 
@@ -89,14 +92,14 @@ class DeckRoot extends React.Component {
         this.props.dispatch(selectMode(mode))
     }
 
-    //for layer opacity setting
-    _handleOpacityChange(opacity) {
-        this.props.dispatch(updateOpacity(opacity))
+    _handleScaleChange(scaler) {
+        console.log(scaler);
+        this.props.dispatch(updateScale(scaler))
     }
 
 
     _renderVisualizationOverlay() {
-        const { popDots, oldDots, hexes, holc, mapMode } = this.props;
+        const { popDots} = this.props;
         if (popDots === null) {
             return []
         }
@@ -128,7 +131,7 @@ class DeckRoot extends React.Component {
         const mapSelectionProps = {
             mapMode: this.props.mapMode,
             selectModeFunc: this._handleSelectMode.bind(this),
-            opacityFunc: this._handleOpacityChange.bind(this),
+            scaleFunc: this._handleScaleChange.bind(this),
             rasterSetFunc: this._onStyleChange.bind(this)
         }
 
@@ -159,11 +162,13 @@ function mapStateToProps(state) {
         popDots: state.popDots,
         oldDots: state.oldDots,
         polygons: state.polygons,
+        hsPolygons: state.hsPolygons,
         mapMode: state.mapMode,
         mapStyle: state.mapStyle,
         layerOpacity: state.layerOpacity,
         pCol: state.pCol,
-        oCol: state.oCol
+        oCol: state.oCol,
+        polyScaler: state.polyScaler
     }
 }
 const DeckApp = connect(mapStateToProps)(DeckRoot);

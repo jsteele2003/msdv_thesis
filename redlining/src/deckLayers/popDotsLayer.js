@@ -21,7 +21,6 @@ export function renderDotsOverlay(param) {
 function _renderDotsLayer(param) {
 
     const { popDots, oldDots, mapMode, layerOpacity} = param;
-    console.log(layerOpacity)
     let colors = (mapMode == MapMode.DOTS ? DOT_COLORS : OLD_COLORS);
     return new ScatterplotLayer({
         id: 'dot-plot',
@@ -39,10 +38,7 @@ function _renderDotsLayer(param) {
         transitions: {
             getPosition: {
                 duration: 2000,
-                easing: d3.easeCubicInOut,
-                onStart: evt => console.log('position transition started', evt),
-                onEnd: evt => console.log('position transition ended', evt),
-                onInterrupt: evt => console.log('position transition interrupted', evt)
+                easing: d3.easeCubicInOut
             },
             getColor: 600
         }

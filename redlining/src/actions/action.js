@@ -1,10 +1,13 @@
-import {UPDATE_MAP, SELECT_MODE, LOAD_POLY, LOAD_OLD_POINTS, LOAD_POP_POINTS, UPDATE_STYLE} from '../constants/action_types';
+import {UPDATE_MAP, SELECT_MODE, LOAD_POLY, LOAD_HSPOLY, LOAD_OLD_POINTS, LOAD_POP_POINTS, UPDATE_SCALE, UPDATE_STYLE} from '../constants/action_types';
 
 export const updateMap = mapViewState =>
     ({type: UPDATE_MAP, mapViewState: mapViewState});
 
 export const updateStyle = mapStyle =>
     ({type: UPDATE_STYLE, mapStyle: mapStyle});
+
+export const updateScale = polyScaler =>
+    ({type: UPDATE_SCALE, polyScaler: polyScaler});
 
 export const updateOpacity = layerOpacity =>
     ({type: UPDATE_OPACITY, layerOpacity: layerOpacity});
@@ -22,6 +25,10 @@ export function loadOldPoints(points) {
 
 export function loadPoly(polygons) {
     return {type: LOAD_POLY, polygons: polygons};
+}
+
+export function loadHsPoly(hsPolygons) {
+    return {type: LOAD_HSPOLY, hsPolygons: hsPolygons};
 }
 
 

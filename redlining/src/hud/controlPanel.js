@@ -31,10 +31,9 @@ class ControlRoot extends PureComponent {
     _handleWipeEnter(c){
         // console.log(c)
         if(c.previousPosition == 'below'){
-            this.setState({width: '40%'});
+            this.setState({width: '35%'});
 
             this.props.rasterSetFunc(rasterMapStyle);
-
 
             this.setState({visibility: 'hidden'});
             this.setState({background: '-webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%'});
@@ -62,7 +61,8 @@ class ControlRoot extends PureComponent {
             this.props.selectModeFunc(MapMode.NONE);
             return;
         }
-        this.props.selectModeFunc(mode)
+        this.props.selectModeFunc(mode);
+        window.setTimeout(this.props.scaleFunc(1), 4500);
     }
 
     _handleChangeBase(evt, mode) {
@@ -121,6 +121,14 @@ class ControlRoot extends PureComponent {
                             <Row style={{ height: '70%'}}>
                                 <Col xs={8} xsOffset={2}>
                                     <p style={{fontSize: '2em'}} >
+                                        Redlining Context
+                                    </p>
+                                </Col>
+                            </Row>
+                            <Row style={{ height: '30%'}}></Row>
+                            <Row style={{ height: '70%'}}>
+                                <Col xs={8} xsOffset={2}>
+                                    <p style={{fontSize: '2em'}} >
                                         HOLC Context Placeholder
                                     </p>
                                 </Col>
@@ -151,6 +159,8 @@ class ControlRoot extends PureComponent {
                                     <input type="checkbox" checked={mapMode === MapMode.OLD} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.OLD)}}/>
                                     HOLC Borders
                                     <input type="checkbox" checked={mapMode === MapMode.POLYINC} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.POLYINC)}}/>
+                                    Census Divides
+                                    <input type="checkbox" checked={mapMode === MapMode.POLYHS} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.POLYHS)}}/>
                                     Census Divides
                                 </div>
 

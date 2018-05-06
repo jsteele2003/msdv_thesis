@@ -123,12 +123,11 @@ function genPoints(filePath, year){
     });
 }
 
-function genGeoJsonLayerData(filePath){
+function genGeoJsonHsLayerData(filePath){
     fs.readFile(filePath, (err, data) => {
         if (err) throw err;
         console.log(JSON.parse(data));
         let hvArr = [];
-        let incomeArr = [];
         let geoData = JSON.parse(data);
         geoData.features = geoData.features.filter(feature => DEV_ARR.includes(feature.properties['display'].split(',')[1].split(" ")[1]));
         // console.log(geoData);
@@ -139,6 +138,33 @@ function genGeoJsonLayerData(filePath){
             demArr.push(parseInt(elem.properties['numAsian']));
             demArr.push(parseInt(elem.properties['numLatino']));
             hvArr.push(elem.properties['housingValue']);
+            elem.properties['majorityDemo'] = demArr.indexOf(Math.max(...demArr))
+            delete elem.id;
+            delete elem.properties['median_income'];
+        })
+
+        // console.log(geoData.features)
+        // console.log("housing min:" + Math.min(...hvArr) + "housing max:" + Math.max(...hvArr));
+        fs.writeFile("./2016/deckHs.json", JSON.stringify(geoData));
+
+    })
+
+}
+
+function genGeoJsonIncLayerData(filePath){
+    fs.readFile(filePath, (err, data) => {
+        if (err) throw err;
+        console.log(JSON.parse(data));
+        let incomeArr = [];
+        let geoData = JSON.parse(data);
+        geoData.features = geoData.features.filter(feature => DEV_ARR.includes(feature.properties['display'].split(',')[1].split(" ")[1]));
+        // console.log(geoData);
+        geoData.features.forEach(function(elem){
+            let demArr = [];
+            demArr.push(parseInt(elem.properties['numWhite']));
+            demArr.push(parseInt(elem.properties['numBlack']));
+            demArr.push(parseInt(elem.properties['numAsian']));
+            demArr.push(parseInt(elem.properties['numLatino']));
             (elem.properties['median_income'] != "-" ? incomeArr.push(parseInt(elem.properties['median_income'])) : elem.properties['median_income'] = 0);
 
             elem.properties['majorityDemo'] = demArr.indexOf(Math.max(...demArr))
@@ -148,12 +174,15 @@ function genGeoJsonLayerData(filePath){
         // console.log(geoData.features)
         // console.log("housing min:" + Math.min(...hvArr) + "housing max:" + Math.max(...hvArr));
         console.log("inc min:" + Math.min(...incomeArr) + "inc max:" + Math.max(...incomeArr));
-        fs.writeFile("./2016/deckGeo.json", JSON.stringify(geoData));
-
+        fs.writeFile("./2016/deckInc.json", JSON.stringify(geoData));
 
     })
 
 }
+
+
+
+
 
 function genHousingJson(filePath){
     let rJson = [];
@@ -185,5 +214,7 @@ console.log(process.cwd())
 // genPoints(geoFilePath_1940, 1940);
 // genPoints(geoFilePath_2016, 2016);
 // genHousingJson(housingFilePath);
-genGeoJsonLayerData(housingGeoPath);
+genGeoJsonHsLayerData(housingGeoPath);
+genGeoJsonIncLayerData(housingGeoPath);
+
 
