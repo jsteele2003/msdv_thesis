@@ -163,12 +163,13 @@ class ControlRoot extends PureComponent {
 
                             <Row style={{ height: '70%'}}>
                                 <Col xs={8} xsOffset={2}>
-                                    <p style={{fontSize: '2em'}} >
+                                    <h1 className="text-center" style={{fontStyle: 'italic'}}> Travels in America</h1>
+                                    <p style={{fontSize: '1.5em'}} >
                                         "Those free men who are shop keepers earn a moderate living but never expand their businesses beyond a certain point,
                                         The simple reason is that... the whites, who have the money, are not willing to lend to a Negro the capital
                                         necessary for a big commercial establishment."
                                     </p>
-                                    <p> Jacques Pierre Brissot, 1788</p>
+                                    <p style={{fontSize:'1.2em'}}> -Jacques Pierre Brissot , 1788</p>
                                 </Col>
                             </Row>
 

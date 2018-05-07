@@ -5,9 +5,9 @@ export const MAPBOX_TOKEN = process.env.MAPBOX;
 
 export const DARK_TOKEN = process.env.DARKBOX;
 
-export const dots16_URL = '../data/2016/pennDots.json';
+export const dots16_URL = '../miscData/pennDots.json';
 
-export const dots40_URL = '../data/1940/1940Dots.json';
+export const dots40_URL = '../miscData/1940Dots.json';
 
 export const poly_URL = '../data/2016/deckGeo.json';
 

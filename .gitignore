@@ -5,11 +5,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-#data
-/redlining/data
-
 #large files
 largeData/
+miscData/
 
 #node_modules
 node_modules/
