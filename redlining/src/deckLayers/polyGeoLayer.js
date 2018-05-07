@@ -73,6 +73,26 @@ export default class PolyOverlay extends PureComponent{
         }
     }
 
+    _renderTooltip() {
+        const {x, y, hoveredObject} = this.state;
+
+        if (!hoveredObject) {
+            return null;
+        }
+        const lat = hoveredObject.centroid[1];
+        const lng = hoveredObject.centroid[0];
+        const count = hoveredObject.points.length;
+
+        return (
+            <div className="tooltip"
+                 style={{left: x, top: y}}>
+                <div>{`latitude: ${Number.isFinite(lat) ? lat.toFixed(6) : ''}`}</div>
+                <div>{`longitude: ${Number.isFinite(lng) ? lng.toFixed(6) : ''}`}</div>
+                <div>{`${count} Accidents`}</div>
+            </div>
+        );
+    }
+
 
     render(){
         const { polygons, mapMode, mapViewState} = this.props.props;
@@ -87,6 +107,8 @@ export default class PolyOverlay extends PureComponent{
             elevationScale : this.state.elevationScale,
             extruded: true,
             wireframe: true,
+            pickable: true,
+            onHover: info => console.log(info.object),
             autoHighlight: true,
             fp64: false,
             getElevation: f => (mapMode == MapMode.POLYINC ? ((f.properties.median_income - incMin) / 10): ((f.properties.housingValue - houseMin) / 100)),

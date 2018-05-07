@@ -26,50 +26,73 @@ class ControlRoot extends PureComponent {
         this.state = {
             width: '100%',
             background: '-webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #ffa7a0 100%)',
-            visibility: 'visible'
+            visibility: 'visible',
+            defaultView : {
+                longitude: -75.07386546961281,
+                latitude: 39.94791260958592,
+                zoom: 11,
+                minZoom: 5,
+                maxZoom: 16,
+                pitch: 60,
+                transitionDuration: 3000,
+                transitionInterpolator: new FlyToInterpolator(),
+                transitionEasing: d3.easeCubic
+
+            }
         };
     }
 
-    goTo_NY (){
-        const updatedView = {
-        latitude: 40.70237278,
-        longitude: -74.01143532,
-        zoom: 14,
-        transitionDuration: 5000,
-        transitionInterpolator: new FlyToInterpolator(),
-        transitionEasing: d3.easeCubic
-    };
-        this.props.viewUpdateFunc(updatedView);
+    flyCam(updatedState){
+        this.props.viewUpdateFunc(updatedState);
     };
 
 
-    _handleWipeEnter(c){
+    _handleEnter1(c){
         // console.log(c)
         if(c.previousPosition == 'below'){
-            this.setState({width: '35%'});
+            this.setState({width: '40%'});
 
             this.props.rasterSetFunc(rasterMapStyle);
-            this.goTo_NY();
-
             this.setState({visibility: 'hidden'});
             this.setState({background: '-webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%'});
         }
 
     }
 
-
-    _handleWipeLeave(c){
+    _handleLeave1(c){
         if(c.currentPosition == 'below'){
             this.setState({width: '100%'});
             this.setState({visibility: 'visible'});
             this.setState({background: '-webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #ffa7a0 100%)'});
             this.props.selectModeFunc(MapMode.NONE);
             this.props.rasterSetFunc(defaultMapStyle);
-
+            this.flyCam(this.state.defaultView);
 
 
         }
     }
+
+    _handleEnter2(c){
+        if(c.previousPosition == 'below') {
+            const updatedView = {
+                zoom: 10,
+                latitude: this.props.mapViewState.latitude,
+                longitude: this.props.mapViewState.longitude,
+                pitch: this.props.mapViewState.pitch,
+                transitionDuration: 3000,
+                transitionInterpolator: new FlyToInterpolator(),
+                transitionEasing: d3.easeCubic
+            };
+            this.flyCam(updatedView);
+        }
+    }
+
+    _handleLeave2(c){
+        if(c.currentPosition == 'below') {
+
+        }
+    }
+
 
     _handleChangeMode(evt, mode) {
         const { mapMode } = this.props;
@@ -78,7 +101,6 @@ class ControlRoot extends PureComponent {
             return;
         }
         this.props.selectModeFunc(mode);
-        window.setTimeout(this.props.scaleFunc(1), 4500);
     }
 
     _handleChangeBase(evt, mode) {
@@ -92,9 +114,8 @@ class ControlRoot extends PureComponent {
 
 
     render() {
-        const {mapMode, mapBase} = this.props;
+        const {mapMode} = this.props;
         const {width, background, visibility} = this.state;
-        const Container = this.props.containerComponent || defaultContainer;
         return (
             <ControlContainer style={{
                 width: width,
@@ -160,31 +181,51 @@ class ControlRoot extends PureComponent {
                             <Row style={{ height: '30%'}}></Row>
 
                             <Row style={{ height: '70%'}}>
-                                <Col xs={6} xsOffset={3} xsHidden={true}>
+                                <Col xs={12} md={6} mdOffset={3}>
                                         <p style={{
                                             fontSize: '1.5em',
+                                            textAlign: 'center',
                                             visibility: visibility}} >
-                                            In particular, the borders drawn by these maps in the cities of Philadelphia and New York
+                                            In particular, the borders drawn by these maps in Philadelphia, among other cities,
                                             made certain divisions more pronounced, across the lines of
                                             segregation, housing value, and income - borders which still exist in the present day
                                         </p>
                                 </Col>
                             </Row>
 
+                            <Row style={{ height: '30%'}}/>
+                            <Waypoint
+                                onEnter={(evt) => this._handleEnter1(evt)} onLeave={(evt) => this._handleLeave1(evt)}
+                            />
+                            <Row style={{ height: '30%'}}>
+
+                                <Col xs={8} xsOffset={2}>
+                                    <h1 className="text-center">
+                                        Philadelphia <br/>
+                                        HOLC Map, 1936
+                                    </h1>
+                                    <p style={{fontSize: '1.5em'}} >
+                                        The maps bracketed cities into 4 categories (A-D) - measures of residential "security".
+                                        Across the country, the lowest-ranked D neighbourhoods showed repeated difference in racial composition
+                                        from the other, higher-rated areas.
+                                    </p>
+                                </Col>
+                            </Row>
+                            <Waypoint
+                                onEnter={(evt) => this._handleEnter2(evt)} onLeave={(evt) => this._handleLeave2(evt)}
+                            />
                             <Row style={{ height: '80%'}}>
+
                             </Row>
                             <Row style={{ height: '30%'}}>
-                                <Waypoint
-                                    onEnter={(evt) => this._handleWipeEnter(evt)} onLeave={(evt) => this._handleWipeLeave(evt)}
-                                />
                                 <Col xs={8} xsOffset={2}>
-                                    <p style={{fontSize: '2em'}} >
-                                        "How Happy are Those <br></br> Whose Walls Already Rise"
+                                    <p className='text-center' style={{fontSize: '2em'}} >
+                                        "How happy are those <br></br> whose walls already rise"
                                     </p>
                                 </Col>
                             </Row>
 
-                            <Row style={{height:'30%'}}>
+                            <Row style={{height:'80%'}}>
 
                                 <Col xs={12}>
                                 <div className='title-label'>Mode Selection</div>

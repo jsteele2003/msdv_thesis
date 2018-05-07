@@ -31,13 +31,8 @@ h1, h2, h3{
 }
 p {
     font-family: Garamond;
-    text-transform: lowercase;
 }
 
-
-p:first-letter {
-    text-transform: capitalize;
-}
 /*.control-panel:hover {*/
     /*width: 33%;*/
 /*}*/

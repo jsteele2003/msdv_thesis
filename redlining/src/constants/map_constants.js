@@ -13,8 +13,6 @@ export const dots40Full_URL = '../data/1940/1940Dots.json';
 
 export const poly_URL = '../data/2016/deckGeo.json';
 
-export const hsPoly_URL = '../data/2016/deckHS.json';
-
 export const holc_URL = '../data/holc/holc.geojson';
 
 export const phil_HOLC_ID = "joesteele-6a5xs2ot";
