@@ -55,6 +55,17 @@ class ControlRoot extends PureComponent {
             this.props.rasterSetFunc(rasterMapStyle);
             this.setState({visibility: 'hidden'});
             this.setState({background: '-webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%'});
+
+            const updatedView = {
+                zoom: 10,
+                latitude: this.props.mapViewState.latitude,
+                longitude: this.props.mapViewState.longitude,
+                pitch: this.props.mapViewState.pitch,
+                transitionDuration: 3000,
+                transitionInterpolator: new FlyToInterpolator(),
+                transitionEasing: d3.easeCubic
+            };
+            this.flyCam(updatedView);
         }
 
     }
@@ -153,8 +164,11 @@ class ControlRoot extends PureComponent {
                             <Row style={{ height: '70%'}}>
                                 <Col xs={8} xsOffset={2}>
                                     <p style={{fontSize: '2em'}} >
-                                        1788 Quote Placeholder
+                                        "Those free men who are shop keepers earn a moderate living but never expand their businesses beyond a certain point,
+                                        The simple reason is that... the whites, who have the money, are not willing to lend to a Negro the capital
+                                        necessary for a big commercial establishment."
                                     </p>
+                                    <p> Jacques Pierre Brissot, 1788</p>
                                 </Col>
                             </Row>
 
@@ -197,12 +211,12 @@ class ControlRoot extends PureComponent {
                             <Waypoint
                                 onEnter={(evt) => this._handleEnter1(evt)} onLeave={(evt) => this._handleLeave1(evt)}
                             />
-                            <Row style={{ height: '30%'}}>
+                            <Row style={{ height: '100%'}}>
 
                                 <Col xs={8} xsOffset={2}>
                                     <h1 className="text-center">
-                                        Philadelphia <br/>
-                                        HOLC Map, 1936
+                                        PHILADELPHIA <br/>
+                                        HOLC MAP, 1936
                                     </h1>
                                     <p style={{fontSize: '1.5em'}} >
                                         The maps bracketed cities into 4 categories (A-D) - measures of residential "security".
@@ -211,17 +225,17 @@ class ControlRoot extends PureComponent {
                                     </p>
                                 </Col>
                             </Row>
-                            <Waypoint
-                                onEnter={(evt) => this._handleEnter2(evt)} onLeave={(evt) => this._handleLeave2(evt)}
-                            />
+                            {/*<Waypoint*/}
+                                {/*onEnter={(evt) => this._handleEnter2(evt)} onLeave={(evt) => this._handleLeave2(evt)}*/}
+                            {/*/>*/}
                             <Row style={{ height: '80%'}}>
 
                             </Row>
                             <Row style={{ height: '30%'}}>
                                 <Col xs={8} xsOffset={2}>
-                                    <p className='text-center' style={{fontSize: '2em'}} >
-                                        "How happy are those <br></br> whose walls already rise"
-                                    </p>
+                                    <h1 className='text-center' >
+                                        THOSE WHOSE WALLS ALREADY RISE - VIRGIL
+                                    </h1>
                                 </Col>
                             </Row>
 

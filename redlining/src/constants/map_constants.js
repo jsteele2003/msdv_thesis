@@ -9,8 +9,6 @@ export const dots16_URL = '../data/2016/pennDots.json';
 
 export const dots40_URL = '../data/1940/1940Dots.json';
 
-export const dots40Full_URL = '../data/1940/1940Dots.json';
-
 export const poly_URL = '../data/2016/deckGeo.json';
 
 export const holc_URL = '../data/holc/holc.geojson';
