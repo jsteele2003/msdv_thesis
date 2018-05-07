@@ -18,9 +18,8 @@ export const ControlContainer = styled.div`
     transition: width 1s ease-in-out;
     -webkit-font-smoothing: antialiased;
     line-height: 2;
-    color: #6b6b76;
     outline: none;
-    opacity: 0.55;
+    opacity: 0.65;
 `;
 
 

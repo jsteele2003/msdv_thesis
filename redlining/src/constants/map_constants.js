@@ -9,6 +9,8 @@ export const dots16_URL = '../miscData/pennDots.json';
 
 export const dots40_URL = '../miscData/1940Dots.json';
 
+export const dots40_PROD ='https://cdn.rawgit.com/jsteele2003/msdv_thesis/fa6dae87/redlining/data/1940/1940Dots.json';
+
 export const poly_URL = '../data/2016/deckGeo.json';
 
 export const holc_URL = '../data/holc/holc.geojson';
