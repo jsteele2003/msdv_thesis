@@ -1,3 +1,5 @@
+import { combineReducers } from 'redux';
+import { loadingBarReducer } from 'react-redux-loading-bar';
 import { MapMode, DOT_COLORS, OLD_COLORS} from '../constants/map_constants'
 import {LinearInterpolator, FlyToInterpolator} from 'react-map-gl';
 import {
@@ -93,4 +95,10 @@ const rootReducer = (state = INITIAL_STATE, action) => {switch (action.type) {
         return state;
 }};
 
-export default rootReducer;
+const reducer = combineReducers({
+    // app reducers
+    rootReducer: rootReducer,
+    loadingBar: loadingBarReducer,
+})
+
+export default reducer;

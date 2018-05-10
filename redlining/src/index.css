@@ -28,9 +28,11 @@ body {
 
 h1, h2, h3{
     font-family: Bebas;
+    color: #000;
 }
 p {
     font-family: Garamond;
+    color: #000;
 }
 
 /*.control-panel:hover {*/

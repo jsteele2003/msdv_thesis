@@ -28,6 +28,7 @@ export default class PolyOverlay extends PureComponent{
             elevationScale: elevationScale.min
         };
 
+        //bind here for convenience
         this._startAnimate = this._startAnimate.bind(this);
         this._animateHeight = this._animateHeight.bind(this);
 

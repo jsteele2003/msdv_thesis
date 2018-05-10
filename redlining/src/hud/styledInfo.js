@@ -15,7 +15,7 @@ export const ControlContainer = styled.div`
     right: 0;
     height: 100vh;
     box-shadow: 30px 10px 5px 20px #777;
-    transition: width 1s ease-in-out;
+    transition: width 3s ease-in-out;
     -webkit-font-smoothing: antialiased;
     line-height: 2;
     outline: none;

@@ -1,15 +1,17 @@
 import React from 'react';
 import MapGL from 'react-map-gl';
-import DeckOverlay from './deckLayers/overlayContainer.js';
-import rootReducer from './reducers/index';
+import reducer from './reducers/index';
+import LoadingBar from 'react-redux-loading-bar';
+
 import {
     updateMap, selectMode, loadPopPoints, loadOldPoints, updateScale, updateStyle,
     loadPoly, loadHsPoly
 } from './actions/action';
 import {
-    DARK_TOKEN, MAPBOX_TOKEN, MapMode, dots16_URL, dots40_URL, poly_URL,
+    DARK_TOKEN, MAPBOX_TOKEN, MapMode, dots16_URL, dots40_URL, poly_URL, dots16_PROD, dots40_PROD, poly_PROD,
     hsPoly_URL
 } from './constants/map_constants';
+
 import { renderDotsOverlay } from './deckLayers/popDotsLayer';
 import PolyOverlay from './deckLayers/polyGeoLayer';
 
@@ -54,9 +56,9 @@ class DeckRoot extends React.PureComponent {
     }
 
     loadData() {
-        this._loadDispatch(dots16_URL, (data) => this.props.dispatch(loadPopPoints(data)));
-        this._loadDispatch(dots40_URL, (data) => this.props.dispatch(loadOldPoints(data)));
-        this._loadDispatch(poly_URL, (data) => this.props.dispatch(loadPoly(data)));
+        this._loadDispatch(dots16_PROD, (data) => this.props.dispatch(loadPopPoints(data)));
+        this._loadDispatch(dots40_PROD, (data) => this.props.dispatch(loadOldPoints(data)));
+        this._loadDispatch(poly_PROD, (data) => this.props.dispatch(loadPoly(data)));
     }
 
     _handleResize() {
@@ -91,7 +93,6 @@ class DeckRoot extends React.PureComponent {
     }
 
     _handleScaleChange(scaler) {
-        console.log(scaler);
         this.props.dispatch(updateScale(scaler))
     }
 
@@ -102,8 +103,6 @@ class DeckRoot extends React.PureComponent {
         if (popDots === null) {
             return []
         }
-
-        console.log(this.props);
 
         //props for overlays
         const layerParams = {
@@ -137,6 +136,9 @@ class DeckRoot extends React.PureComponent {
 
         return (
             <div>
+                <header>
+                    <LoadingBar />
+                </header>
                 <MapGL
                     mapboxApiAccessToken={DARK_TOKEN}
                     width={width}
@@ -159,15 +161,15 @@ class DeckRoot extends React.PureComponent {
 //binds state tree to component props
 function mapStateToProps(state) {
     return {
-        mapViewState: state.mapViewState,
-        popDots: state.popDots,
-        oldDots: state.oldDots,
-        polygons: state.polygons,
-        mapMode: state.mapMode,
-        mapStyle: state.mapStyle,
-        layerOpacity: state.layerOpacity,
-        pCol: state.pCol,
-        oCol: state.oCol,
+        mapViewState: state.rootReducer.mapViewState,
+        oldDots: state.rootReducer.oldDots,
+        popDots: state.rootReducer.popDots,
+        polygons: state.rootReducer.polygons,
+        mapMode: state.rootReducer.mapMode,
+        mapStyle: state.rootReducer.mapStyle,
+        layerOpacity: state.rootReducer.layerOpacity,
+        pCol: state.rootReducer.pCol,
+        oCol: state.rootReducer.oCol,
     }
 }
 const DeckApp = connect(mapStateToProps)(DeckRoot);

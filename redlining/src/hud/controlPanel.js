@@ -64,12 +64,42 @@ class ControlRoot extends PureComponent {
         this.props.viewUpdateFunc(updatedState);
     };
 
+    _handleLeave0(c){
+
+        if(c.currentPosition == 'above'){
+            this.setState({visibility: 'hidden'});
+            this.setState({width: '40%'});
+            this.props.rasterSetFunc(rasterMapStyle);
+            this.setState({background: '-webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%'});
+
+            const updatedView = {
+                zoom: 10,
+                latitude: this.props.mapViewState.latitude,
+                longitude: this.props.mapViewState.longitude,
+                pitch: this.props.mapViewState.pitch,
+                transitionDuration: 3000,
+                transitionInterpolator: new FlyToInterpolator(),
+                transitionEasing: d3.easeCubic
+            };
+            this.setState({view1 : updatedView});
+            this.flyCam(updatedView);
+        }
+    }
+    _handleLeave1(c){
+        if(c.currentPosition == 'below'){
+            this.setState({width: '100%'});
+            this.setState({background: '-webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #ffa7a0 100%)'});
+            this.props.selectModeFunc(MapMode.NONE);
+            this.props.rasterSetFunc(defaultMapStyle);
+            this.flyCam(this.state.defaultView);
+            this.setState({visibility: 'visible'});
+        }
+
+    }
 
     _handleEnter1(c){
-        // console.log(c)
         if(c.previousPosition == 'below'){
             this.setState({width: '40%'});
-
             this.props.rasterSetFunc(rasterMapStyle);
             this.setState({visibility: 'hidden'});
             this.setState({background: '-webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%'});
@@ -89,18 +119,6 @@ class ControlRoot extends PureComponent {
 
     }
 
-    _handleLeave1(c){
-        if(c.currentPosition == 'below'){
-            this.setState({width: '100%'});
-            this.setState({visibility: 'visible'});
-            this.setState({background: '-webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #ffa7a0 100%)'});
-            this.props.selectModeFunc(MapMode.NONE);
-            this.props.rasterSetFunc(defaultMapStyle);
-            this.flyCam(this.state.defaultView);
-
-
-        }
-    }
 
     _handleEnter2(c){
         if(c.previousPosition == 'below') {
@@ -172,9 +190,10 @@ class ControlRoot extends PureComponent {
     _handleLeave4(c){
         if(c.currentPosition == 'below') {
             this.flyCam(this.state.view3);
-            setTimeout(() => this.props.rasterSetFunc(rasterMapStyle), 1000);
+            this.props.rasterSetFunc(rasterMapStyle);
             if(this.props.mapMode == MapMode.DOTS){
-                setTimeout(() => this.props.selectModeFunc(MapMode.OLD), 1000);
+                // this.props.selectModeFunc(MapMode.OLD);
+                setTimeout(() => this.props.selectModeFunc(MapMode.OLD), 500);
             }
 
         }
@@ -240,26 +259,26 @@ class ControlRoot extends PureComponent {
 
                             <Row style={{ height: '30%'}}></Row>
 
-                            <Row style={{ height: '70%'}}>
-                                <Col sm={12} md={6} mdOffset={3}>
+                            <Row>
+                                <Col xs={6} xsOffset={3}>
                                     <h1 className="text-center" style={{fontStyle: 'italic'}}> Travels in America, 1788</h1>
-                                    <p style={{fontSize: '1.5em'}} >
+                                    <p style={{fontSize: '20px'}} >
                                         "Those free men who are shop keepers earn a moderate living but never expand their businesses beyond a certain point,
                                         The simple reason is that... the whites, who have the money, are not willing to lend to a Negro the capital
                                         necessary for a big commercial establishment."
                                     </p>
-                                    <p style={{fontSize:'1.2em'}}> -Jacques Pierre Brissot</p>
+                                    <p style={{fontSize:'16px'}}> -Jacques Pierre Brissot</p>
                                 </Col>
                             </Row>
 
 
-                            <Row style={{ height: '30%'}}></Row>
+                            <Row style={{ height: '80%'}}></Row>
 
-                            <Row style={{ height: '70%'}}>
-                                <Col sm={12} md={6} mdOffset={3}>
-                                    <p style={{fontSize: '1.5em'}} >
-                                        This practice came to be known as "redlining" - the selective denial of credit and services to physically-defined spaces, on the basis of race.
-                                        However, the term originally referenced something specific:
+                            <Row>
+                                <Col xs={6} xsOffset={3}>
+                                    <p style={{fontSize: '20px'}} >
+                                        In the 20th Century, this practice came to be known generally as "redlining" - the selective denial of credit and services to physically-defined spaces, on the basis of race.
+                                        However, the term grew out of a reference to something more specific:
                                         the Home Owner's Loan Corporation. Part of the New Deal, the federal program was conceived to underwrite loans to in-need Americans.
                                         But by the late 1930's, with the program supposedly winding down, HOLC began drawing maps of "residential security" for American cities -
                                         maps which often divided areas according to racial desirability.
@@ -267,122 +286,143 @@ class ControlRoot extends PureComponent {
                                 </Col>
                             </Row>
 
-                            <Row style={{ height: '30%'}}></Row>
+                            <Row style={{ height: '80%'}}></Row>
 
                             <Row style={{ height: '70%'}}>
-                                <Col sm={12} md={6} mdOffset={3}>
+                                <Col xs={6} xsOffset={3}>
                                         <p style={{
-                                            fontSize: '1.5em',
-                                            textAlign: 'center',
+                                            fontSize: '20px',
                                             visibility: visibility}} >
-                                            In particular, the borders drawn by these maps in Philadelphia, among other cities,
+                                            In cities like Philadelphia, the HOLC borders
                                             made certain divisions more pronounced, across the lines of
                                             segregation, housing value, and income - disparities which are still physically-realised in the present day.
                                         </p>
+                                    <Waypoint
+                                        onLeave={(evt) => this._handleLeave0(evt)}
+                                    />
                                 </Col>
                             </Row>
 
-                            <Row style={{ height: '30%'}}/>
-                            <Waypoint
-                                onEnter={(evt) => this._handleEnter1(evt)} onLeave={(evt) => this._handleLeave1(evt)}
-                            />
-                            <Row style={{ height: '100%'}}>
-
+                            <Row style={{ height: '50%'}}/>
+                            <Row>
                                 <Col xs={8} xsOffset={2}>
+                                    <Waypoint
+                                        onEnter={(evt) => this._handleEnter1(evt)} onLeave={(evt) => this._handleLeave1(evt)}
+                                    />
                                     <h1 className="text-center">
                                         PHILADELPHIA <br/>
                                         HOLC MAP, 1936
                                     </h1>
-                                    <p style={{fontSize: '1.5em'}} >
+                                    <style type="text/css">{`
+                                    .badge-a {
+                                        background-color: #0080ff;
+                                        margin-right: 10%;
+                                        line-height:2;
+                                    }
+                                    .badge-b {
+                                        line-height:2;
+                                        margin-left: 10%;
+                                         background-color: #f45006;
+                                    }
+                                    .badge-c {
+                                        line-height:2;
+                                         background-color: #ff0080;
+                                    }
+                                    .badge-d {
+                                        line-height:2;
+                                         background-color: #89f442;
+                                    }
+                                    `}</style>
+                                    <p style={{fontSize: '20px'}} >
                                         The maps bracketed cities into 4 categories (A-D) - measures of supposed residential security.
                                         Across the country, the lowest-ranked D neighbourhoods showed repeated difference in racial composition
                                         from the other, higher-rated areas.
                                     </p>
                                 </Col>
                             </Row>
+                            <Row style={{ height: '70%'}}></Row>
                             <Waypoint
                                 onEnter={(evt) => this._handleEnter2(evt)} onLeave={(evt) => this._handleLeave2(evt)}
                             />
-                            <Row style={{ height: '100%'}}>
+                            <Row>
 
                                 <Col xs={8} xsOffset={2}>
-                                    <p style={{fontSize: '1.5em'}} >
+                                    <p style={{fontSize: '20px'}} >
                                         In this case, the most apparent instance of the trend is in West Philadelphia, on a border defined by Market Street-
                                         the area north of which was shaded entirely in red.
                                     </p>
                                 </Col>
                             </Row>
+                            <Row style={{ height: '70%'}}></Row>
                             <Waypoint
                                 onEnter={(evt) => this._handleEnter3(evt)} onLeave={(evt) => this._handleLeave3(evt)}
                             />
                             <Row style={{ height: '100%'}}>
                                 <Col xs={8} xsOffset={2}>
-                                    <p style={{fontSize: '1.5em'}} >
-                                        If we overlay demographic data from the 1940 US census along this border, the racial divide becomes readily apparent; however, virtually every
-                                        minority-majority area in Philadelphia as a whole was also lined with red.
+                                    <p style={{fontSize: '20px'}} >
+                                        If we overlay demographic data from the 1940 US census along this border, the racial divide becomes readily apparent; in general, virtually every
+                                        minority-populated area in the city was also redlined.
 
                                     </p>
-                                    {MapMode.OLD == mapMode && <p style={{fontSize: '1.5em'}}>Each dot represents a single person from the census; the colour of the dot corresponds to whether that person was White or PoC</p>}
+                                    <Button className="text-center" active={mapMode === MapMode.OLD} onClick={() => this._handleBtClick(MapMode.OLD)} block> 1940 Census</Button>
+                                    <p style={{fontSize: '20px'}}>Each dot represents a single person from the census; the colour of the dot corresponds to whether that person was White or PoC</p>
                                     <style type="text/css">{`
                                     .badge-white {
                                         background-color: #0080ff;
-                                        margin-right: 5%
+                                        line-height:2;
                                     }
                                     .badge-poc {
+                                        line-height:2;
                                          background-color: #f45006;
                                     }
+                                    .badge-black {
+                                        line-height:2;
+                                         background-color: #ff0080;
+                                    }
+                                    .badge-asian {
+                                        line-height:2;
+                                         background-color: #89f442;
+                                    }
+                                    .badge-latino {
+                                        line-height:2;
+                                         background-color: #f49542;
+                                    }
                                     `}</style>
-                                    {MapMode.OLD == mapMode ? <div style={{marginTop:'10%', display: 'flex', justifyContent: 'center'}}> <Badge bsStyle="white">White</Badge> <Badge bsStyle="poc">PoC</Badge> </div> : <Button className="text-center" active={mapMode == MapMode.OLD} onClick={() => this._handleBtClick(MapMode.OLD)} block>1940 Census</Button>}
+                                    <div style={{marginTop:'10%', display: 'flex', justifyContent: 'center'}}>
+                                        <Badge bsStyle="white">White</Badge> <Badge bsStyle="poc">PoC</Badge>
+                                    </div>
 
                                 </Col>
                             </Row>
-                            <Waypoint
-                                onEnter={(evt) => this._handleEnter4(evt)} onLeave={(evt) => this._handleLeave4(evt)}
-                            />
-                            <Row style={{ height: '100%'}}>
+                            <Row style={{ height: '30%'}}></Row>
+                            <Row>
 
                                 <Col xs={8} xsOffset={2}>
-                                    <p style={{fontSize: '1.5em'}} >
-
+                                    <Waypoint
+                                        onEnter={(evt) => this._handleEnter4(evt)} onLeave={(evt) => this._handleLeave4(evt)}
+                                    />
+                                    <p style={{fontSize: '20px'}} >
+                                        These lines of segregation may have shifted over time, but they haven't dissolved.
+                                        The 2010 census allows us to overlay more granular demographic information from the present.
                                     </p>
+                                    <Button className="text-center" active={mapMode === MapMode.DOTS} onClick={() => this._handleBtClick(MapMode.DOTS)} block> 2010 Census</Button>
+                                    <div style={{marginTop:'10%', display: 'flex', justifyContent: 'center'}}>
+                                        <Badge bsStyle="white">White</Badge> <Badge bsStyle="black">Black</Badge><Badge bsStyle="asian">Asian</Badge><Badge bsStyle="latino">Latino</Badge>
+                                    </div>
+                                </Col>
+                            </Row>
+                            <Row style={{ height: '50%'}}></Row>
+                            <Row>
+
+                                <Col xs={8} xsOffset={2}>
+                                    <p style={{fontSize: '20px'}} >
+                                        These borders don't just express racial divides;
+                                        the disparities in socioeconomic which exist in general in America can be seen along these boundaries too. </p>
                                 </Col>
                             </Row>
 
 
-                            <Row style={{height:'80%'}}>
-                                THOSE WHOSE WALLS ALREADY RISE - VIRGIL
-                                <Col xs={12}>
-                                <div className='title-label'>Mode Selection</div>
-                                <div className='selection'>
-                                    <input type="checkbox" checked={mapMode === MapMode.DOTS} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.DOTS)}}/>
-                                    Population Dot Map
-                                    <input type="checkbox" checked={mapMode === MapMode.OLD} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.OLD)}}/>
-                                    HOLC Borders
-                                    <input type="checkbox" checked={mapMode === MapMode.POLYINC} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.POLYINC)}}/>
-                                    Census Divides
-                                    <input type="checkbox" checked={mapMode === MapMode.POLYHS} onChange={(evt)=>{this._handleChangeMode(evt, MapMode.POLYHS)}}/>
-                                    Census Divides
-                                </div>
-
-                                <div className='title-label'>Mouse Selection</div>
-                                <ButtonGroup bsSize="large">
-                                    <Button active={true} onChange={(evt)=>{this._handleChangeBase(evt, MapMode.HOLC)}}>HOLC Borders</Button>
-                                    <Button>Census Borders</Button>
-                                </ButtonGroup>
-
-                                <div className='title-label'>Cities</div>
-                                <ButtonGroup bsSize="large">
-                                    <Button>Philadelphia</Button>
-                                    <Button>New York</Button>
-                                </ButtonGroup>
-                                </Col>
-                            </Row>
                         </Grid>;
-
-
-                {/*controls for redux */}
-
-
 
             </ControlContainer>
         )
@@ -399,12 +439,9 @@ ControlRoot.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        mapViewState: state.mapViewState,
-        popDots: state.popDots,
-        polygons: state.polygons,
-        mapMode: state.mapMode,
-        mapBase: state.mapBase,
-        mapStyle: state.mapStyle
+        mapViewState: state.rootReducer.mapViewState,
+        mapMode: state.rootReducer.mapMode,
+        mapStyle: state.rootReducer.mapStyle
     }
 }
 const ControlPanel = connect(mapStateToProps)(ControlRoot);

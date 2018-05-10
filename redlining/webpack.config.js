@@ -34,9 +34,7 @@ module.exports = {
             template: "./src/index.html",
             filename: "./index.html"
         }),
-        new Dotenv({
-            path: './.env',
-        }),
+        new Dotenv(),
         new MiniCssExtractPlugin({
             filename: "[name].css",
             chunkFilename: "[id].css"
