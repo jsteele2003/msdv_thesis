@@ -23,6 +23,7 @@ export default class PolyOverlay extends PureComponent{
 
         this.startAnimationTimer = null;
         this.intervalTimer = null;
+        this.reverse = false;
 
         this.state = {
             elevationScale: elevationScale.min

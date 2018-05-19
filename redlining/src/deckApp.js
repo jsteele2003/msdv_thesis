@@ -67,9 +67,7 @@ class DeckRoot extends React.PureComponent {
 
     //
     _handleViewportChanged(mapViewState) {
-        if (mapViewState.pitch > 60) {
-            mapViewState.pitch = 60
-        }
+        mapViewState.minZoom = 10;
         this.props.dispatch(updateMap(mapViewState))
     }
 

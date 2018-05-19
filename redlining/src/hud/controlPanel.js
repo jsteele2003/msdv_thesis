@@ -15,6 +15,9 @@ import { bootstrapUtils } from 'react-bootstrap/lib/utils';
 
 bootstrapUtils.addStyle(Badge, 'white');
 bootstrapUtils.addStyle(Badge, 'poc');
+bootstrapUtils.addStyle(Badge, 'black');
+bootstrapUtils.addStyle(Badge, 'asian');
+bootstrapUtils.addStyle(Badge, 'latino');
 
 
 
@@ -39,6 +42,7 @@ class ControlRoot extends PureComponent {
 
         this.state = {
             width: '100%',
+            opacity: '0',
             background: '-webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #ffa7a0 100%)',
             visibility: 'visible',
             oldLoad : false,
@@ -69,6 +73,7 @@ class ControlRoot extends PureComponent {
         if(c.currentPosition == 'above'){
             this.setState({visibility: 'hidden'});
             this.setState({width: '40%'});
+            this.setState({opacity: '1'});
             this.props.rasterSetFunc(rasterMapStyle);
             this.setState({background: '-webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%'});
 
@@ -88,6 +93,7 @@ class ControlRoot extends PureComponent {
     _handleLeave1(c){
         if(c.currentPosition == 'below'){
             this.setState({width: '100%'});
+            this.setState({opacity: '0'});
             this.setState({background: '-webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #ffa7a0 100%)'});
             this.props.selectModeFunc(MapMode.NONE);
             this.props.rasterSetFunc(defaultMapStyle);
@@ -100,6 +106,7 @@ class ControlRoot extends PureComponent {
     _handleEnter1(c){
         if(c.previousPosition == 'below'){
             this.setState({width: '40%'});
+            this.setState({opacity: '1'});
             this.props.rasterSetFunc(rasterMapStyle);
             this.setState({visibility: 'hidden'});
             this.setState({background: '-webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%'});
@@ -181,7 +188,7 @@ class ControlRoot extends PureComponent {
             this.flyCam(updatedView);
             this.props.rasterSetFunc(defaultMapStyle);
             if(this.props.mapMode == MapMode.OLD){
-                setTimeout(() => this.props.selectModeFunc(MapMode.DOTS), 1000);
+                setTimeout(() => this.props.selectModeFunc(MapMode.DOTS), 2000);
             }
 
         }
@@ -193,7 +200,7 @@ class ControlRoot extends PureComponent {
             this.props.rasterSetFunc(rasterMapStyle);
             if(this.props.mapMode == MapMode.DOTS){
                 // this.props.selectModeFunc(MapMode.OLD);
-                setTimeout(() => this.props.selectModeFunc(MapMode.OLD), 500);
+                setTimeout(() => this.props.selectModeFunc(MapMode.OLD), 2000);
             }
 
         }
@@ -223,7 +230,8 @@ class ControlRoot extends PureComponent {
 
     render() {
         const {mapMode} = this.props;
-        const {width, background, visibility} = this.state;
+        const {width, background, visibility, opacity} = this.state;
+        const leadOpacity = (opacity == 1 ? 0 : 1)
         return (
 
             <ControlContainer style={{
@@ -292,6 +300,8 @@ class ControlRoot extends PureComponent {
                                 <Col xs={6} xsOffset={3}>
                                         <p style={{
                                             fontSize: '20px',
+                                            opacity: leadOpacity,
+                                            transition: "opacity 3s ease-in-out",
                                             visibility: visibility}} >
                                             In cities like Philadelphia, the HOLC borders
                                             made certain divisions more pronounced, across the lines of
@@ -303,9 +313,10 @@ class ControlRoot extends PureComponent {
                                 </Col>
                             </Row>
 
-                            <Row style={{ height: '50%'}}/>
+                            <Row style={{ height: '30%'}}/>
                             <Row>
-                                <Col xs={8} xsOffset={2}>
+                                <Col xs={8} xsOffset={2} style={{opacity: opacity,
+                                    transition: "opacity 5s ease-in-out",}}>
                                     <Waypoint
                                         onEnter={(evt) => this._handleEnter1(evt)} onLeave={(evt) => this._handleLeave1(evt)}
                                     />
@@ -333,7 +344,8 @@ class ControlRoot extends PureComponent {
                                          background-color: #89f442;
                                     }
                                     `}</style>
-                                    <p style={{fontSize: '20px'}} >
+                                    <p style={{fontSize: '20px',
+                                           }} >
                                         The maps bracketed cities into 4 categories (A-D) - measures of supposed residential security.
                                         Across the country, the lowest-ranked D neighbourhoods showed repeated difference in racial composition
                                         from the other, higher-rated areas.
