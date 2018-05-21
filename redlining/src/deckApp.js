@@ -1,18 +1,16 @@
 import React from 'react';
 import MapGL from 'react-map-gl';
 import reducer from './reducers/index';
-import LoadingBar from 'react-redux-loading-bar';
 
 import {
     updateMap, selectMode, loadPopPoints, loadOldPoints, updateScale, updateStyle,
-    loadPoly, loadHsPoly
+    loadPoly, loadHolc
 } from './actions/action';
 import {
     DARK_TOKEN, MAPBOX_TOKEN, MapMode, dots16_URL, dots40_URL, poly_URL, dots16_PROD, dots40_PROD, poly_PROD,
-    hsPoly_URL
+    hsPoly_URL, holc_URL
 } from './constants/map_constants';
 
-import { renderDotsOverlay } from './deckLayers/popDotsLayer';
 import PolyOverlay from './deckLayers/polyGeoLayer';
 
 import {fromJS} from 'immutable';
@@ -22,6 +20,7 @@ const defaultMapStyle = fromJS(MAP_STYLE);
 
 import ControlPanel from './hud/controlPanel';
 import {connect} from "react-redux";
+import DotOverlay from "./deckLayers/popDotsLayer";
 
 class DeckRoot extends React.PureComponent {
     constructor(props) {
@@ -47,7 +46,24 @@ class DeckRoot extends React.PureComponent {
         window.removeEventListener('resize', this._handleResize);
     }
 
-
+    // async _loadDispatchAsync(path){
+    //     try{
+    //         let response = await fetch(path);
+    //         const json  = response.json();
+    //         const data = response.data;
+    //         await json;
+    //         await data;
+    //         console.log(json);
+    //         return data;
+    //
+    //
+    //     }
+    //     catch(e) {
+    //         console.log('Error!', e);
+    //     }
+    //
+    //
+    // }
     //fetches data at path, passes to dispatch callback
     _loadDispatch(path, onLoad){
         fetch(path)
@@ -56,9 +72,11 @@ class DeckRoot extends React.PureComponent {
     }
 
     loadData() {
+        this._loadDispatch(holc_URL, (data) => this.props.dispatch(loadHolc(data)));
         this._loadDispatch(dots16_PROD, (data) => this.props.dispatch(loadPopPoints(data)));
-        this._loadDispatch(dots40_PROD, (data) => this.props.dispatch(loadOldPoints(data)));
+        this._loadDispatch(dots40_URL, (data) => this.props.dispatch(loadOldPoints(data)));
         this._loadDispatch(poly_PROD, (data) => this.props.dispatch(loadPoly(data)));
+
     }
 
     _handleResize() {
@@ -97,10 +115,11 @@ class DeckRoot extends React.PureComponent {
 
 
     _renderVisualizationOverlay() {
-        const { popDots} = this.props;
-        if (popDots === null) {
+        const { popDots, polygons} = this.props;
+        if (polygons === null) {
             return []
         }
+        console
 
         //props for overlays
         const layerParams = {
@@ -112,7 +131,7 @@ class DeckRoot extends React.PureComponent {
         return (
             //each will evaluate to expression to render when MODE passes
             <div>
-                { renderDotsOverlay(layerParams) }
+                {/*<DotOverlay {...layerParams}/>*/}
                 <PolyOverlay {...layerParams} />
             </div>
         )
@@ -134,21 +153,19 @@ class DeckRoot extends React.PureComponent {
 
         return (
             <div>
-                <header>
-                    <LoadingBar />
-                </header>
+
                 <MapGL
                     mapboxApiAccessToken={DARK_TOKEN}
                     width={width}
                     height={height}
                     mapStyle={mapStyle}
                     perspectiveEnabled
-                    { ...mapViewState }
+                    {...mapViewState}
                     onViewportChange={this._handleViewportChanged.bind(this)}>
                     {isActiveOverlay && this._renderVisualizationOverlay()}
                 </MapGL>
-
                 <ControlPanel {...mapSelectionProps}/>
+
             </div>
 
 
@@ -163,6 +180,7 @@ function mapStateToProps(state) {
         oldDots: state.rootReducer.oldDots,
         popDots: state.rootReducer.popDots,
         polygons: state.rootReducer.polygons,
+        holc: state.rootReducer.holc,
         mapMode: state.rootReducer.mapMode,
         mapStyle: state.rootReducer.mapStyle,
         layerOpacity: state.rootReducer.layerOpacity,

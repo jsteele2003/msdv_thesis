@@ -4,7 +4,7 @@ import { MapMode, DOT_COLORS, OLD_COLORS} from '../constants/map_constants'
 import {LinearInterpolator, FlyToInterpolator} from 'react-map-gl';
 import {
     UPDATE_MAP, SELECT_MODE, LOAD_POP_POINTS, LOAD_OLD_POINTS, UPDATE_STYLE, UPDATE_SCALE, UPDATE_OPACITY,
-    LOAD_POLY, LOAD_HSPOLY
+    LOAD_POLY, LOAD_HSPOLY, LOAD_HOLC
 } from '../constants/action_types'
 import MAP_STYLE from '../../data/mapStyles/philMap'
 import {fromJS} from "immutable";
@@ -91,6 +91,9 @@ const rootReducer = (state = INITIAL_STATE, action) => {switch (action.type) {
     case LOAD_HSPOLY:
         const hsPolygons = action.hsPolygons;
         return {...state, hsPolygons: hsPolygons};
+    case LOAD_HOLC:
+        const holc = action.holc;
+        return {...state, holc: holc};
     default:
         return state;
 }};

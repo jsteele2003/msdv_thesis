@@ -14,7 +14,7 @@ const censusFilePath_2016='../../data/2016/pa_census16_obj.csv';
 const censusFilePath_1940='../../data/1940/1940_pop.csv';
 
 const geoFilePath= '/Users/joesteele/WebstormProjects/msdv_thesis/redlining/data/2016/pa_16_final.json';
-const geoFilePath_1940='/Users/joesteele/WebstormProjects/msdv_thesis/redlining/data/1940/1940_combinedGeo.json';
+const geoFilePath_1940='/Users/joesteele/WebstormProjects/msdv_thesis/redlining/miscData/1940_combinedGeo.json';
 
 const housingFilePath= './2016/pa_housing16.csv';
 const housingGeoPath= './2016/pa16HousingGeoMapped.json';
@@ -213,10 +213,10 @@ let rand = function(min, max) {
 };
 // genJson(censusFilePath_1940, 1940);
 console.log(process.cwd())
-// genPoints(geoFilePath_1940, 1940);
+genPoints(geoFilePath_1940, 1940);
 // genPoints(geoFilePath_2016, 2016);
 // genHousingJson(housingFilePath);
-genGeoJsonHsLayerData(housingGeoPath);
-genGeoJsonIncLayerData(housingGeoPath);
+// genGeoJsonHsLayerData(housingGeoPath);
+// genGeoJsonIncLayerData(housingGeoPath);
 
 

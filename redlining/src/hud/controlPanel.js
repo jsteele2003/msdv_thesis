@@ -1,7 +1,8 @@
 import React, {PureComponent} from 'react';
 import { MapMode, MapBase, OLD_COLORS } from '../constants/map_constants';
 import PropTypes from 'prop-types';
-import {Title, ControlContainer} from './styledInfo';
+import { BarLoader } from 'react-spinners';
+import { ControlContainer} from './styledInfo';
 import { connect } from 'react-redux';
 import { Button, Badge, Grid, Row, Col, ButtonGroup} from 'react-bootstrap';
 import Waypoint from 'react-waypoint';
@@ -10,7 +11,6 @@ import DEF_STYLE from '../../data/mapStyles/philMap'
 import {fromJS} from "immutable";
 import * as d3 from "d3-ease";
 import {LinearInterpolator, FlyToInterpolator} from 'react-map-gl';
-import {DiscreteColorLegend} from 'react-vis';
 import { bootstrapUtils } from 'react-bootstrap/lib/utils';
 
 bootstrapUtils.addStyle(Badge, 'white');
@@ -18,15 +18,6 @@ bootstrapUtils.addStyle(Badge, 'poc');
 bootstrapUtils.addStyle(Badge, 'black');
 bootstrapUtils.addStyle(Badge, 'asian');
 bootstrapUtils.addStyle(Badge, 'latino');
-
-
-
-const OLD_ITEMS = [
-    'White',
-    'Person of Color'
-];
-
-const OLD_LEGEND = ['#0080ff', 'f45006'];
 
 
 const rasterMapStyle = fromJS(MAP_STYLE);
@@ -45,10 +36,6 @@ class ControlRoot extends PureComponent {
             opacity: '0',
             background: '-webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #ffa7a0 100%)',
             visibility: 'visible',
-            oldLoad : false,
-            popLoad : false,
-            incLoad : false,
-            hsLoad : false,
             defaultView : {
                 longitude: -75.07386546961281,
                 latitude: 39.94791260958592,
@@ -188,7 +175,7 @@ class ControlRoot extends PureComponent {
             this.flyCam(updatedView);
             this.props.rasterSetFunc(defaultMapStyle);
             if(this.props.mapMode == MapMode.OLD){
-                setTimeout(() => this.props.selectModeFunc(MapMode.DOTS), 2000);
+                setTimeout(() => this.props.selectModeFunc(MapMode.DOTS), 3000);
             }
 
         }
@@ -200,7 +187,7 @@ class ControlRoot extends PureComponent {
             this.props.rasterSetFunc(rasterMapStyle);
             if(this.props.mapMode == MapMode.DOTS){
                 // this.props.selectModeFunc(MapMode.OLD);
-                setTimeout(() => this.props.selectModeFunc(MapMode.OLD), 2000);
+                setTimeout(() => this.props.selectModeFunc(MapMode.OLD), 3000);
             }
 
         }
@@ -208,7 +195,6 @@ class ControlRoot extends PureComponent {
 
     _handleBtClick(mode){
         const { mapMode } = this.props;
-        console.log(MapMode.OLD === mapMode);
         if (mode === mapMode) {
             this.props.selectModeFunc(MapMode.NONE);
             return;
@@ -258,14 +244,38 @@ class ControlRoot extends PureComponent {
                                         <h1 className="text-center">
                                             MOVING THE LINE
                                         </h1>
-                                        <h3 className="text-center">
+                                        <h3 className="text-center"
+                                            style={{ marginBottom: '10%'}}>
                                             SHIFTING BORDERS AND DISPARITIES IN AMERICAN CITIES
                                         </h3>
+
+                                        <BarLoader
+                                            className="text-center"
+                                            color={'#D0021B'}
+                                            width={"100%"}
+                                            loading={this.props.oldDots === null}
+                                        />
+
+
                                     </div>
                                 </Col>
                             </Row>
 
                             <Row style={{ height: '30%'}}></Row>
+
+                            <Row>
+                                <Col xs={6} xsOffset={3}>
+                                    <p style={{fontSize: '20px'}} >
+                                        In 2017, a Pew Research poll showed, by a 66-23% margin, that Americans believe interpersonal prejudice plays a larger role in discrimination than institutional causes.
+                                        But more than determining the import of one such contributing factor over the other, the way Pew phrased this question omitted any consideration of how they intertwine in structural,
+                                        self-perpetuating ways. American institutions and beliefs feed into one another continuously and cyclically- something exemplified by a particular historical trend, dating back to the
+                                        beginning of the country itself.
+                                    </p>
+                                </Col>
+                            </Row>
+
+                            <Row style={{ height: '80%'}}></Row>
+
 
                             <Row>
                                 <Col xs={6} xsOffset={3}>
@@ -313,7 +323,7 @@ class ControlRoot extends PureComponent {
                                 </Col>
                             </Row>
 
-                            <Row style={{ height: '30%'}}/>
+                            <Row style={{ height: '50%'}}/>
                             <Row>
                                 <Col xs={8} xsOffset={2} style={{opacity: opacity,
                                     transition: "opacity 5s ease-in-out",}}>
@@ -347,8 +357,8 @@ class ControlRoot extends PureComponent {
                                     <p style={{fontSize: '20px',
                                            }} >
                                         The maps bracketed cities into 4 categories (A-D) - measures of supposed residential security.
-                                        Across the country, the lowest-ranked D neighbourhoods showed repeated difference in racial composition
-                                        from the other, higher-rated areas.
+                                        Across the country, the lowest-ranked D neighbourhoods showed repeated differences in racial composition
+                                        from the other, higher-rated areas- even when controlling for housing value.
                                     </p>
                                 </Col>
                             </Row>
@@ -372,12 +382,12 @@ class ControlRoot extends PureComponent {
                             <Row style={{ height: '100%'}}>
                                 <Col xs={8} xsOffset={2}>
                                     <p style={{fontSize: '20px'}} >
-                                        If we overlay demographic data from the 1940 US census along this border, the racial divide becomes readily apparent; in general, virtually every
+                                        If we overlay demographic data from along this border, the racial divide becomes readily apparent; in general, virtually every
                                         minority-populated area in the city was also redlined.
 
                                     </p>
-                                    <Button className="text-center" active={mapMode === MapMode.OLD} onClick={() => this._handleBtClick(MapMode.OLD)} block> 1940 Census</Button>
-                                    <p style={{fontSize: '20px'}}>Each dot represents a single person from the census; the colour of the dot corresponds to whether that person was White or PoC</p>
+                                    <Button className="text-center" active={mapMode === MapMode.OLD} onClick={() => this._handleBtClick(MapMode.OLD)} block> 1940 Data</Button>
+                                    <p style={{fontSize: '20px'}}>Each dot represents a single person, living in Philadelphia in 1940; the colour of the dot corresponds to whether that person was White or PoC</p>
                                     <style type="text/css">{`
                                     .badge-white {
                                         background-color: #0080ff;
@@ -415,9 +425,12 @@ class ControlRoot extends PureComponent {
                                     />
                                     <p style={{fontSize: '20px'}} >
                                         These lines of segregation may have shifted over time, but they haven't dissolved.
-                                        The 2010 census allows us to overlay more granular demographic information from the present.
+                                        Although the segregating effects of the HOLC maps reached their worst point in the 1960's, before the passage of federal civil rights laws
+                                        such as the Fair Housing and Community Reinvestment Acts, research efforts in 2017 showed still-lingering borders along the original C-D boundaries.
+                                        With the more granular demographic information that is now available, we can distinguish an array of spatial disparities and divisions in Philadelphia from the current decade-showing that even
+                                        in supposedly multicultural cities, harder, unseen borders still express themselves.
                                     </p>
-                                    <Button className="text-center" active={mapMode === MapMode.DOTS} onClick={() => this._handleBtClick(MapMode.DOTS)} block> 2010 Census</Button>
+                                    <Button className="text-center" active={mapMode === MapMode.DOTS} onClick={() => this._handleBtClick(MapMode.DOTS)} block> 2010 Data</Button>
                                     <div style={{marginTop:'10%', display: 'flex', justifyContent: 'center'}}>
                                         <Badge bsStyle="white">White</Badge> <Badge bsStyle="black">Black</Badge><Badge bsStyle="asian">Asian</Badge><Badge bsStyle="latino">Latino</Badge>
                                     </div>
@@ -432,6 +445,8 @@ class ControlRoot extends PureComponent {
                                         the disparities in socioeconomic which exist in general in America can be seen along these boundaries too. </p>
                                 </Col>
                             </Row>
+                            <Row style={{ height: '50%'}}></Row>
+
 
 
                         </Grid>;
@@ -453,7 +468,10 @@ function mapStateToProps(state) {
     return {
         mapViewState: state.rootReducer.mapViewState,
         mapMode: state.rootReducer.mapMode,
-        mapStyle: state.rootReducer.mapStyle
+        mapStyle: state.rootReducer.mapStyle,
+        polygons: state.rootReducer.polygons,
+        oldDots: state.rootReducer.oldDots,
+        popDots: state.rootReducer.popDots,
     }
 }
 const ControlPanel = connect(mapStateToProps)(ControlRoot);

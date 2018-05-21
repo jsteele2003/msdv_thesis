@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
-import DeckGL, {GeoJsonLayer} from 'deck.gl';
-import {MapMode, DOT_COLORS, incMax, incMin, houseMin} from '../constants/map_constants';
+import DeckGL, {GeoJsonLayer, ScatterplotLayer, PolygonLayer} from 'deck.gl';
+import {MapMode, DOT_COLORS, incMax, incMin, houseMin, OLD_COLORS, HOLC_COLORS} from '../constants/map_constants';
 import * as d3 from "d3-ease";
 
 
@@ -14,6 +14,8 @@ const LIGHT_SETTINGS = {
 };
 
 const elevationScale = {min: 0.01, max: 1};
+const radiusScale = {min : 1, max: 10};
+
 
 
 export default class PolyOverlay extends PureComponent{
@@ -26,12 +28,15 @@ export default class PolyOverlay extends PureComponent{
         this.reverse = false;
 
         this.state = {
-            elevationScale: elevationScale.min
+            elevationScale: elevationScale.min,
+            radiusScale: radiusScale.min,
+            holcColor: HOLC_COLORS.A
         };
 
         //bind here for convenience
         this._startAnimate = this._startAnimate.bind(this);
         this._animateHeight = this._animateHeight.bind(this);
+        this._animateRadius = this._animateRadius.bind(this);
 
     }
 
@@ -60,6 +65,7 @@ export default class PolyOverlay extends PureComponent{
 
     _startAnimate() {
         this.intervalTimer = window.setInterval(this._animateHeight, 20);
+        this.intervalTimer = window.setInterval(this._animateRadius, 5);
     }
 
     _stopAnimate() {
@@ -72,6 +78,14 @@ export default class PolyOverlay extends PureComponent{
             this._stopAnimate();
         } else {
             this.setState({elevationScale: this.state.elevationScale + 0.005});
+        }
+    }
+
+    _animateRadius() {
+        if (this.state.radiusScale > radiusScale.max) {
+            this._stopAnimate();
+        } else {
+            this.setState({radiusScale: this.state.radiusScale + 0.025});
         }
     }
 
@@ -97,9 +111,50 @@ export default class PolyOverlay extends PureComponent{
 
 
     render(){
-        const { polygons, mapMode, mapViewState} = this.props.props;
+        const {mapViewState, popDots, oldDots, mapMode, polygons, holc} = this.props.props;
+        let colors = (mapMode == MapMode.DOTS ? DOT_COLORS : OLD_COLORS);
+        const holcColor = this.state.holcColor;
         const { width, height } = this.props.state;
-        const layer = new GeoJsonLayer({
+
+        const scatterLayer = new ScatterplotLayer({
+            id: 'dot-plot',
+            data: (mapMode == MapMode.DOTS ? popDots : oldDots),
+            visible: (mapMode == MapMode.DOTS || mapMode == MapMode.DOTS),
+            radiusScale: this.state.radiusScale,
+            getPosition: d => [d[0], d[1], -1],
+            getColor: d => colors[d[2]],
+            getRadius: d => 1,
+            updateTriggers: {
+                getColor: colors,
+            },
+            transitions: {
+                getPosition: {
+                    duration: 2000,
+                    easing: d3.easeCubicInOut
+                },
+                getColor: 600
+            }
+        });
+
+        const holcLayer = new GeoJsonLayer({
+            id: 'holc-map',
+            data: holc,
+            visible: mapMode == MapMode.OLD,
+            opacity: 0,
+            stroked: true,
+            filled: true,
+            pickable: true,
+            wireframe: true,
+            onHover: info => this.setState({holcColor: HOLC_COLORS[info.object.properties.holc_grade]}),
+            highlightColor: holcColor,
+            autoHighlight: true,
+            fp64: false,
+        });
+
+        // this.setState({holcColor: HOLC_COLORS[info.object.properties.holc_grade]})
+
+
+        const censusLayer = new GeoJsonLayer({
             id: 'poly-map',
             data: polygons,
             visible: (mapMode == MapMode.POLYHS || mapMode == MapMode.POLYINC),
@@ -130,11 +185,11 @@ export default class PolyOverlay extends PureComponent{
 
         return (
             <DeckGL
-                id="poly-overlay"
+                id="overlays"
                 width={width}
                 height={height}
                 {...mapViewState}
-                layers={[layer]}
+                layers={[censusLayer, holcLayer, scatterLayer]}
             />
 
         )
