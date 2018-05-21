@@ -111,15 +111,14 @@ export default class PolyOverlay extends PureComponent{
 
 
     render(){
-        const {mapViewState, popDots, oldDots, mapMode, polygons, holc} = this.props.props;
+        const {mapViewState, popDots, oldDots, mapMode, polygons, holc, phPolygons} = this.props.props;
         let colors = (mapMode == MapMode.DOTS ? DOT_COLORS : OLD_COLORS);
         const holcColor = this.state.holcColor;
         const { width, height } = this.props.state;
-
         const scatterLayer = new ScatterplotLayer({
             id: 'dot-plot',
             data: (mapMode == MapMode.DOTS ? popDots : oldDots),
-            visible: (mapMode == MapMode.DOTS || mapMode == MapMode.DOTS),
+            visible: (mapMode == MapMode.DOTS || mapMode == MapMode.OLD),
             radiusScale: this.state.radiusScale,
             getPosition: d => [d[0], d[1], -1],
             getColor: d => colors[d[2]],
@@ -136,6 +135,19 @@ export default class PolyOverlay extends PureComponent{
             }
         });
 
+        const phillyLayer = new GeoJsonLayer({
+            id: 'philly-map',
+            data: phPolygons,
+            visible: mapMode == MapMode.DOTS,
+            opacity: 0,
+            stroked: true,
+            filled: true,
+            pickable: true,
+            wireframe: true,
+            autoHighlight: true,
+            fp64: false,
+        });
+
         const holcLayer = new GeoJsonLayer({
             id: 'holc-map',
             data: holc,
@@ -144,7 +156,6 @@ export default class PolyOverlay extends PureComponent{
             stroked: true,
             filled: true,
             pickable: true,
-            wireframe: true,
             onHover: info => this.setState({holcColor: HOLC_COLORS[info.object.properties.holc_grade]}),
             highlightColor: holcColor,
             autoHighlight: true,
@@ -176,7 +187,7 @@ export default class PolyOverlay extends PureComponent{
             },
             transitions:{
                 getElevation: {
-                    duration: 2000,
+                    duration: 4000,
                     easing: d3.easeCubicInOut,
                     onStart: evt => console.log('position transition started', evt)}
             },
@@ -189,7 +200,7 @@ export default class PolyOverlay extends PureComponent{
                 width={width}
                 height={height}
                 {...mapViewState}
-                layers={[censusLayer, holcLayer, scatterLayer]}
+                layers={[ censusLayer, scatterLayer, holcLayer, phillyLayer]}
             />
 
         )

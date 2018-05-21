@@ -11,9 +11,6 @@ store.subscribe(() => console.log(store.getState()));
 // store.dispatch( updateMap({ zoom: 15}) )
 
 
-
-// ReactDOM.render(<DeckRoot />, document.body.appendChild(document.createElement('demo')));
-
 ReactDOM.render(
     <Provider store={store}>
         <DeckApp/>

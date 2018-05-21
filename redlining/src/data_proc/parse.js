@@ -19,6 +19,7 @@ const geoFilePath_1940='/Users/joesteele/WebstormProjects/msdv_thesis/redlining/
 const housingFilePath= './2016/pa_housing16.csv';
 const housingGeoPath= './2016/pa16HousingGeoMapped.json';
 const evictPath = './2016/pa_eviction_tracts.geojson';
+const neighborPath = "./2016/PA_Neighborhoods.json";
 
 
 
@@ -63,6 +64,27 @@ function genJson(filePath, year) {
         })
 }
 
+
+/**
+ *
+ * @param filePath
+ * @return geojson of philly neighborhoods
+ */
+function filterNeighbor(filePath){
+    fs.readFile(filePath, (err, data) => {
+        if (err) throw err;
+        // console.log(JSON.parse(data));
+        let rArr = [];
+        let geoData = JSON.parse(data);
+
+        geoData.features = geoData.features.filter(feature => feature.properties.County == 'Philadelphia');
+        console.log(geoData);
+
+        fs.writeFile("../data/2016/Philly_Neighborhoods.json", JSON.stringify(geoData))
+    });
+}
+
+filterNeighbor(neighborPath);
 /**
  *
  * @param filePath
@@ -213,7 +235,7 @@ let rand = function(min, max) {
 };
 // genJson(censusFilePath_1940, 1940);
 console.log(process.cwd())
-genPoints(geoFilePath_1940, 1940);
+// genPoints(geoFilePath_1940, 1940);
 // genPoints(geoFilePath_2016, 2016);
 // genHousingJson(housingFilePath);
 // genGeoJsonHsLayerData(housingGeoPath);

@@ -19,6 +19,10 @@ export const poly_URL = '../data/2016/deckGeo.json';
 
 export const holc_URL = '../data/holc/HOLC_Philadelphia.geojson';
 
+export const market_URL = '../data/holc/HOLC_Market.geojson';
+
+export const philly_URL = '../data/2016/Philly_Neighborhoods.json';
+
 export const phil_HOLC_ID = "joesteele-6a5xs2ot";
 
 export const houseMin = 40900;
@@ -55,10 +59,10 @@ const C_COLOR = [244, 80, 6];
 
 
 export const HOLC_COLORS = {
-    A :[72,128,72, 100],
-    B :[115,158,157, 100],
-    C :[95,206,73, 100],
-    D :[176,102,113, 100]
+    B :[5, 175, 255, 200],
+    A :[41, 214, 2, 200],
+    C :[255, 255, 5, 200],
+    D :[214, 2, 2, 200]
 }
 
 

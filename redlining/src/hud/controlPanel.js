@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { BarLoader } from 'react-spinners';
 import { ControlContainer} from './styledInfo';
 import { connect } from 'react-redux';
-import { Button, Badge, Grid, Row, Col, ButtonGroup} from 'react-bootstrap';
+import { Button, Badge, Grid, Glyphicon, Row, Col, ButtonGroup} from 'react-bootstrap';
 import Waypoint from 'react-waypoint';
 import MAP_STYLE from '../../data/mapStyles/philMapRaster'
 import DEF_STYLE from '../../data/mapStyles/philMap'
@@ -54,6 +54,10 @@ class ControlRoot extends PureComponent {
     flyCam(updatedState){
         this.props.viewUpdateFunc(updatedState);
     };
+
+    _handleWidthClick(){
+        this.setState({width: '40%'});
+    }
 
     _handleLeave0(c){
 
@@ -133,6 +137,8 @@ class ControlRoot extends PureComponent {
     _handleLeave2(c){
         if(c.currentPosition == 'below') {
             this.flyCam(this.state.view1);
+            this.props.selectModeFunc(MapMode.NONE);
+
         }
     }
 
@@ -321,8 +327,12 @@ class ControlRoot extends PureComponent {
                                         onLeave={(evt) => this._handleLeave0(evt)}
                                     />
                                 </Col>
+                                {/*<Col xs={1} xsOffset={1}>*/}
+                                    {/*<Button bsSize="large"  onClick={() => this._handleWidthClick()}>*/}
+                                        {/*<Glyphicon glyph="chevron-right" />*/}
+                                    {/*</Button>*/}
+                                {/*</Col>*/}
                             </Row>
-
                             <Row style={{ height: '50%'}}/>
                             <Row>
                                 <Col xs={8} xsOffset={2} style={{opacity: opacity,
@@ -334,29 +344,9 @@ class ControlRoot extends PureComponent {
                                         PHILADELPHIA <br/>
                                         HOLC MAP, 1936
                                     </h1>
-                                    <style type="text/css">{`
-                                    .badge-a {
-                                        background-color: #0080ff;
-                                        margin-right: 10%;
-                                        line-height:2;
-                                    }
-                                    .badge-b {
-                                        line-height:2;
-                                        margin-left: 10%;
-                                         background-color: #f45006;
-                                    }
-                                    .badge-c {
-                                        line-height:2;
-                                         background-color: #ff0080;
-                                    }
-                                    .badge-d {
-                                        line-height:2;
-                                         background-color: #89f442;
-                                    }
-                                    `}</style>
                                     <p style={{fontSize: '20px',
                                            }} >
-                                        The maps bracketed cities into 4 categories (A-D) - measures of supposed residential security.
+                                        The maps bracketed cities neighborhoods into 4 categories (A-D).
                                         Across the country, the lowest-ranked D neighbourhoods showed repeated differences in racial composition
                                         from the other, higher-rated areas- even when controlling for housing value.
                                     </p>
@@ -369,10 +359,43 @@ class ControlRoot extends PureComponent {
                             <Row>
 
                                 <Col xs={8} xsOffset={2}>
+                                    <style type="text/css">{`
+                                    .badge-a {
+                                        background-color: #6ef442;
+                                        line-height:2;
+                                        margin-right: 5%;
+                                        min-width:30px;
+                                        border-radius:0px;
+                                    }
+                                    .badge-b {
+                                        line-height:2;
+                                         background-color: #41a6f4;
+                                         min-width:30px;
+                                         margin-right: 2.5%;
+                                         border-radius:0px;
+                                    }
+                                    .badge-c {
+                                        line-height:2;
+                                         background-color: #f7ec16;
+                                         margin-left:2.5%;
+                                         min-width:30px;
+                                         border-radius:0px;
+                                    }
+                                    .badge-d {
+                                        line-height:2;
+                                        margin-left:5%;
+                                         background-color: #f90e0e;
+                                         min-width:30px;
+                                         border-radius:0px;
+                                    }
+                                    `}</style>
                                     <p style={{fontSize: '20px'}} >
                                         In this case, the most apparent instance of the trend is in West Philadelphia, on a border defined by Market Street-
                                         the area north of which was shaded entirely in red.
                                     </p>
+                                    <div style={{marginTop:'10%', display: 'flex', justifyContent: 'center'}}>
+                                        <Badge bsStyle="a">A</Badge> <Badge bsStyle="b">B</Badge><Badge bsStyle="c">C</Badge><Badge bsStyle="d">D</Badge>
+                                    </div>
                                 </Col>
                             </Row>
                             <Row style={{ height: '70%'}}></Row>
@@ -381,37 +404,58 @@ class ControlRoot extends PureComponent {
                             />
                             <Row style={{ height: '100%'}}>
                                 <Col xs={8} xsOffset={2}>
+                                    <h1 className="text-center">
+                                        PHILADELPHIA, <br/>
+                                        1940
+                                    </h1>
                                     <p style={{fontSize: '20px'}} >
                                         If we overlay demographic data from along this border, the racial divide becomes readily apparent; in general, virtually every
                                         minority-populated area in the city was also redlined.
 
                                     </p>
                                     <Button className="text-center" active={mapMode === MapMode.OLD} onClick={() => this._handleBtClick(MapMode.OLD)} block> 1940 Data</Button>
-                                    <p style={{fontSize: '20px'}}>Each dot represents a single person, living in Philadelphia in 1940; the colour of the dot corresponds to whether that person was White or PoC</p>
+                                    <p style={{fontSize: '20px'}}>Each dot represents a single person, living in Philadelphia in 1940; the colour of the dot corresponds to whether that person was White or PoC.
+                                    Hover over the map to inspect the underlying HOLC lines.</p>
                                     <style type="text/css">{`
                                     .badge-white {
+                                        margin-right:5%;
                                         background-color: #0080ff;
+                                        min-width:30px;
+                                        line-height:2;
+                                    }
+                                    .badge-wh {
+                                        margin-right:2.5%;
+                                        background-color: #0080ff;
+                                        min-width:30px;
                                         line-height:2;
                                     }
                                     .badge-poc {
                                         line-height:2;
+                                        margin-left:2.5%
+                                        min-width:30px;
                                          background-color: #f45006;
                                     }
                                     .badge-black {
+                                        margin-right:2.5%;
                                         line-height:2;
-                                         background-color: #ff0080;
+                                        min-width:30px;
+                                        background-color: #ff0080;
                                     }
                                     .badge-asian {
                                         line-height:2;
+                                        margin-left:2.5%;
+                                        min-width:30px;
                                          background-color: #89f442;
                                     }
                                     .badge-latino {
                                         line-height:2;
+                                        margin-left:5%;
+                                        min-width:30px;
                                          background-color: #f49542;
                                     }
                                     `}</style>
                                     <div style={{marginTop:'10%', display: 'flex', justifyContent: 'center'}}>
-                                        <Badge bsStyle="white">White</Badge> <Badge bsStyle="poc">PoC</Badge>
+                                        <Badge bsStyle="wh">White</Badge> <Badge bsStyle="poc">PoC</Badge>
                                     </div>
 
                                 </Col>
@@ -423,12 +467,16 @@ class ControlRoot extends PureComponent {
                                     <Waypoint
                                         onEnter={(evt) => this._handleEnter4(evt)} onLeave={(evt) => this._handleLeave4(evt)}
                                     />
+                                    <h1 className="text-center">
+                                        PHILADELPHIA, <br/>
+                                        2010
+                                    </h1>
                                     <p style={{fontSize: '20px'}} >
                                         These lines of segregation may have shifted over time, but they haven't dissolved.
                                         Although the segregating effects of the HOLC maps reached their worst point in the 1960's, before the passage of federal civil rights laws
                                         such as the Fair Housing and Community Reinvestment Acts, research efforts in 2017 showed still-lingering borders along the original C-D boundaries.
-                                        With the more granular demographic information that is now available, we can distinguish an array of spatial disparities and divisions in Philadelphia from the current decade-showing that even
-                                        in supposedly multicultural cities, harder, unseen borders still express themselves.
+                                        With the more granular demographic information that is now available, we can distinguish an array of spatial disparities and divisions in Philadelphia from the current decade.
+                                        Now when you hover over the map, you can inspect contemporary Philly neighbourhoods- and see how many are defined by the racial divides seen here.
                                     </p>
                                     <Button className="text-center" active={mapMode === MapMode.DOTS} onClick={() => this._handleBtClick(MapMode.DOTS)} block> 2010 Data</Button>
                                     <div style={{marginTop:'10%', display: 'flex', justifyContent: 'center'}}>
@@ -443,6 +491,8 @@ class ControlRoot extends PureComponent {
                                     <p style={{fontSize: '20px'}} >
                                         These borders don't just express racial divides;
                                         the disparities in socioeconomic which exist in general in America can be seen along these boundaries too. </p>
+                                    <Button className="text-center" active={mapMode === MapMode.POLYINC} onClick={() => this._handleBtClick(MapMode.DOTS)} block> 2010 Data</Button>
+
                                 </Col>
                             </Row>
                             <Row style={{ height: '50%'}}></Row>

@@ -4,11 +4,11 @@ import reducer from './reducers/index';
 
 import {
     updateMap, selectMode, loadPopPoints, loadOldPoints, updateScale, updateStyle,
-    loadPoly, loadHolc
+    loadPoly, loadHolc, loadPhPoly
 } from './actions/action';
 import {
     DARK_TOKEN, MAPBOX_TOKEN, MapMode, dots16_URL, dots40_URL, poly_URL, dots16_PROD, dots40_PROD, poly_PROD,
-    hsPoly_URL, holc_URL
+    philly_URL, Poly_URL, holc_URL
 } from './constants/map_constants';
 
 import PolyOverlay from './deckLayers/polyGeoLayer';
@@ -64,6 +64,7 @@ class DeckRoot extends React.PureComponent {
     //
     //
     // }
+
     //fetches data at path, passes to dispatch callback
     _loadDispatch(path, onLoad){
         fetch(path)
@@ -72,10 +73,11 @@ class DeckRoot extends React.PureComponent {
     }
 
     loadData() {
+        this._loadDispatch(philly_URL, (data) => this.props.dispatch(loadPhPoly(data)));
         this._loadDispatch(holc_URL, (data) => this.props.dispatch(loadHolc(data)));
         this._loadDispatch(dots16_PROD, (data) => this.props.dispatch(loadPopPoints(data)));
-        this._loadDispatch(dots40_URL, (data) => this.props.dispatch(loadOldPoints(data)));
         this._loadDispatch(poly_PROD, (data) => this.props.dispatch(loadPoly(data)));
+        this._loadDispatch(dots40_URL, (data) => this.props.dispatch(loadOldPoints(data)));
 
     }
 
@@ -115,11 +117,10 @@ class DeckRoot extends React.PureComponent {
 
 
     _renderVisualizationOverlay() {
-        const { popDots, polygons} = this.props;
-        if (polygons === null) {
+        const {oldDots} = this.props;
+        if (oldDots === null) {
             return []
         }
-        console
 
         //props for overlays
         const layerParams = {
@@ -129,7 +130,6 @@ class DeckRoot extends React.PureComponent {
         }
 
         return (
-            //each will evaluate to expression to render when MODE passes
             <div>
                 {/*<DotOverlay {...layerParams}/>*/}
                 <PolyOverlay {...layerParams} />
@@ -139,7 +139,6 @@ class DeckRoot extends React.PureComponent {
 
     render() {
         const {mapViewState, mapMode, mapStyle} = this.props;
-        console.log(this.props);
         const { width, height} = this.state;
         const isActiveOverlay = mapMode !== MapMode.NONE;
 
@@ -180,6 +179,7 @@ function mapStateToProps(state) {
         oldDots: state.rootReducer.oldDots,
         popDots: state.rootReducer.popDots,
         polygons: state.rootReducer.polygons,
+        phPolygons: state.rootReducer.phPolygons,
         holc: state.rootReducer.holc,
         mapMode: state.rootReducer.mapMode,
         mapStyle: state.rootReducer.mapStyle,
