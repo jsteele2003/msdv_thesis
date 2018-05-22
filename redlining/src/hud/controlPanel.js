@@ -217,6 +217,7 @@ class ControlRoot extends PureComponent {
                 transitionEasing: d3.easeCubic
             };
             this.setState({view5: updatedView});
+            this.props.selectModeFunc(MapMode.NONE);
             this.flyCam(updatedView);
 
         }
@@ -225,6 +226,8 @@ class ControlRoot extends PureComponent {
     _handleLeave5(c){
         if(c.currentPosition == 'below') {
             this.flyCam(this.state.view4);
+            this.props.selectModeFunc(MapMode.NONE);
+
         }
     }
 
@@ -397,7 +400,7 @@ class ControlRoot extends PureComponent {
                                     transition: "opacity 5s ease-in-out",}}>
                                     <style type="text/css">{`
                                     .badge-a {
-                                        background-color: #6ef442;
+                                        background-color: #3ead4d;
                                         line-height:2;
                                         margin-right: 5%;
                                         min-width:30px;
@@ -405,14 +408,14 @@ class ControlRoot extends PureComponent {
                                     }
                                     .badge-b {
                                         line-height:2;
-                                         background-color: #41a6f4;
+                                         background-color: #3e56ad;
                                          min-width:30px;
                                          margin-right: 2.5%;
                                          border-radius:0px;
                                     }
                                     .badge-c {
                                         line-height:2;
-                                         background-color: #f7ec16;
+                                         background-color: #a5ad3e;
                                          margin-left:2.5%;
                                          min-width:30px;
                                          border-radius:0px;
@@ -420,7 +423,7 @@ class ControlRoot extends PureComponent {
                                     .badge-d {
                                         line-height:2;
                                         margin-left:5%;
-                                         background-color: #f90e0e;
+                                         background-color: #ad3e3e;
                                          min-width:30px;
                                          border-radius:0px;
                                     }
@@ -533,12 +536,20 @@ class ControlRoot extends PureComponent {
                                     <Waypoint
                                         onEnter={(evt) => this._handleEnter5(evt)} onLeave={(evt) => this._handleLeave5(evt)}
                                     />
+                                    <h1 className="text-center">
+                                        DIVIDING <br/>
+                                        LINES
+                                    </h1>
                                     <p style={{fontSize: '20px'}} >
-                                        These borders don't just express racial divides;
+                                        The city borders don't just express purely racial divides;
                                         the disparities in socioeconomic which exist in general in America can be seen along these boundaries too.
                                         The average black family possesses 1/13th the wealth of the average white one;
                                     </p>
-                                    <Button className="text-center" active={mapMode === MapMode.POLYINC} onClick={() => this._handleBtClick(MapMode.POLYINC)} block> Scale by Property Value</Button>
+                                    <ButtonGroup vertical block>
+                                        <Button className="text-center" active={mapMode === MapMode.POLYINC} onClick={() => this._handleBtClick(MapMode.POLYINC)}> Scale Tracts by Income</Button>
+                                        <Button className="text-center" active={mapMode === MapMode.POLYHS} onClick={() => this._handleBtClick(MapMode.POLYHS)}> Scale Tracts by Housing Value</Button>
+
+                                    </ButtonGroup>;
 
                                 </Col>
                             </Row>

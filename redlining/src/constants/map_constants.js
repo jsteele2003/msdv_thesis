@@ -53,7 +53,7 @@ const B_COLOR = [255, 0, 128];
 const A_COLOR = [137, 244, 66];
 const L_COLOR = [244, 149, 66];
 
-const DEM_ARR = ["White Predominant", "Black Predominant", "White Predominant", "White Predominant"]
+const DEM_ARR = ["White Prevalent", "Black Prevalent", "Asian Prevalent", "Latino Prevalent"]
 
 const C_COLOR = [244, 80, 6];
 

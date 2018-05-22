@@ -45,6 +45,12 @@ export default class PolyOverlay extends PureComponent{
         this._animate();
     }
 
+    getDerivedStateFromProps(nextProps, prevState){
+        if (nextProps.props.mapMode != prevState.props.props.mapMode){
+            this.setState({hoveredObject: null});
+        }
+    }
+
 
     //unsafe, should look for alternative
     componentWillReceiveProps(nextProps) {
@@ -94,24 +100,45 @@ export default class PolyOverlay extends PureComponent{
         }
     }
 
-    _onNeighborhoodHover({x, y, object}) {
+    _onNeighborHover({x, y, object}) {
         this.setState({x, y, hoveredObject: object});
     }
 
-    _renderTooltip() {
+    _onHolcHover({object}) {
+        this.setState({holcColor: HOLC_COLORS[object.properties.holc_grade]});
+        // this.setState({x, y, hoveredObject: object});
+    }
+
+    _renderNeighborTooltip() {
         const {x, y, hoveredObject} = this.state;
 
-        if (!hoveredObject) {
+        if (!hoveredObject || this.props.props.mapMode != MapMode.DOTS) {
             return null;
         }
 
         const neighborhood = hoveredObject.properties.Name;
-        console.log(neighborhood)
 
         return (
             <div className="tooltip"
                  style={{left: x, top: y}}>
                 <div>{neighborhood}</div>
+            </div>
+        );
+    }
+
+    _renderHolcTooltip() {
+        const {x, y, hoveredObject} = this.state;
+
+        if (!hoveredObject || this.props.props.mapMode != MapMode.OLD) {
+            return null;
+        }
+
+        const grade = hoveredObject.properties.holc_id;
+
+        return (
+            <div className="tooltip"
+                 style={{left: x, top: y}}>
+                <div>{`HOLC ID: ${grade}`}</div>
             </div>
         );
     }
@@ -122,6 +149,7 @@ export default class PolyOverlay extends PureComponent{
         let colors = (mapMode == MapMode.DOTS ? DOT_COLORS : OLD_COLORS);
         const holcColor = this.state.holcColor;
         const { width, height } = this.props.state;
+
         const scatterLayer = new ScatterplotLayer({
             id: 'dot-plot',
             data: (mapMode == MapMode.DOTS ? popDots : oldDots),
@@ -151,7 +179,7 @@ export default class PolyOverlay extends PureComponent{
             filled: true,
             pickable: true,
             wireframe: true,
-            onHover: this._onNeighborhoodHover.bind(this),
+            onHover: this._onNeighborHover.bind(this),
             autoHighlight: true,
             fp64: false,
         });
@@ -164,13 +192,11 @@ export default class PolyOverlay extends PureComponent{
             stroked: true,
             filled: true,
             pickable: true,
-            onHover: info => this.setState({holcColor: HOLC_COLORS[info.object.properties.holc_grade]}),
+            onHover: this._onHolcHover.bind(this),
             highlightColor: holcColor,
             autoHighlight: true,
             fp64: false,
         });
-
-        // this.setState({holcColor: HOLC_COLORS[info.object.properties.holc_grade]})
 
 
         const censusLayer = new GeoJsonLayer({
@@ -204,7 +230,7 @@ export default class PolyOverlay extends PureComponent{
 
         return (
             <div>
-                {this._renderTooltip()}
+                {this._renderNeighborTooltip()}
                     <DeckGL
                     id="overlays"
                     width={width}
