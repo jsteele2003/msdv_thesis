@@ -8,5 +8,7 @@ export const LOAD_PH_POLY = 'LOAD_PH_POLY';
 export const UPDATE_OPACITY = 'UPDATE_OPACITY';
 export const UPDATE_STYLE = 'UPDATE_STYLE';
 export const UPDATE_SCALE = 'UPDATE_SCALE';
+export const UPDATE_HOVER = 'UPDATE_HOVER';
+
 
 

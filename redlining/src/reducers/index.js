@@ -62,6 +62,7 @@ const INITIAL_STATE = {
     holc: null,
     polygons: null,
     phPolygons: null,
+    hoveredObject: null,
     mapMode: MapMode.NONE,
     mapStyle : defaultMapStyle
 };

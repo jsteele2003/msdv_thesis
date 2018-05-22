@@ -30,7 +30,8 @@ export default class PolyOverlay extends PureComponent{
         this.state = {
             elevationScale: elevationScale.min,
             radiusScale: radiusScale.min,
-            holcColor: HOLC_COLORS.A
+            holcColor: HOLC_COLORS.A,
+            hoveredObject: null
         };
 
         //bind here for convenience
@@ -59,8 +60,12 @@ export default class PolyOverlay extends PureComponent{
 
     _animate() {
         this._stopAnimate();
+        if(this.props.props.mapMode == MapMode.POLYINC || this.props.props.mapMode == MapMode.POLYHS){
+            this.startAnimationTimer = window.setTimeout(this._startAnimate, 3000);
+        } else {
+            this.startAnimationTimer = window.setTimeout(this._startAnimate, 500);
 
-        this.startAnimationTimer = window.setTimeout(this._startAnimate, 1000);
+        }
     }
 
     _startAnimate() {
@@ -77,7 +82,7 @@ export default class PolyOverlay extends PureComponent{
         if (this.state.elevationScale > elevationScale.max) {
             this._stopAnimate();
         } else {
-            this.setState({elevationScale: this.state.elevationScale + 0.005});
+            this.setState({elevationScale: this.state.elevationScale + 0.0025});
         }
     }
 
@@ -89,22 +94,24 @@ export default class PolyOverlay extends PureComponent{
         }
     }
 
+    _onNeighborhoodHover({x, y, object}) {
+        this.setState({x, y, hoveredObject: object});
+    }
+
     _renderTooltip() {
         const {x, y, hoveredObject} = this.state;
 
         if (!hoveredObject) {
             return null;
         }
-        const lat = hoveredObject.centroid[1];
-        const lng = hoveredObject.centroid[0];
-        const count = hoveredObject.points.length;
+
+        const neighborhood = hoveredObject.properties.Name;
+        console.log(neighborhood)
 
         return (
             <div className="tooltip"
                  style={{left: x, top: y}}>
-                <div>{`latitude: ${Number.isFinite(lat) ? lat.toFixed(6) : ''}`}</div>
-                <div>{`longitude: ${Number.isFinite(lng) ? lng.toFixed(6) : ''}`}</div>
-                <div>{`${count} Accidents`}</div>
+                <div>{neighborhood}</div>
             </div>
         );
     }
@@ -128,7 +135,7 @@ export default class PolyOverlay extends PureComponent{
             },
             transitions: {
                 getPosition: {
-                    duration: 2000,
+                    duration: 4000,
                     easing: d3.easeCubicInOut
                 },
                 getColor: 600
@@ -144,6 +151,7 @@ export default class PolyOverlay extends PureComponent{
             filled: true,
             pickable: true,
             wireframe: true,
+            onHover: this._onNeighborhoodHover.bind(this),
             autoHighlight: true,
             fp64: false,
         });
@@ -195,13 +203,16 @@ export default class PolyOverlay extends PureComponent{
         });
 
         return (
-            <DeckGL
-                id="overlays"
-                width={width}
-                height={height}
-                {...mapViewState}
-                layers={[ censusLayer, scatterLayer, holcLayer, phillyLayer]}
-            />
+            <div>
+                {this._renderTooltip()}
+                    <DeckGL
+                    id="overlays"
+                    width={width}
+                    height={height}
+                    {...mapViewState}
+                    layers={[ censusLayer, scatterLayer, holcLayer, phillyLayer]}
+                />
+            </div>
 
         )
     }

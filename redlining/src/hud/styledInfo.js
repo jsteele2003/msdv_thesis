@@ -38,3 +38,31 @@ export const jacquesQuote = "Those free men who are shop keepers earn a moderate
     "The simple reason is that... the whites, who have the money, are not willing to lend to a Negro the capital\n" +
     "necessary for a big commercial establishment.";
 
+
+export const chartStyle = {
+    background: 'white',
+    borderRadius: 3,
+    opacity: 0,
+    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
+    fontFamily: 'ff-clan-web-pro, "Helvetica Neue", Helvetica, sans-serif !important',
+    fontSize: '12px',
+    lineHeight: 1.833,
+    height: 210,
+    padding: '10px',
+    position: 'absolute',
+    left: 20,
+    top: 20,
+    width: 500,
+    zIndex: 100
+};
+
+export const tooltipStyle = {
+    position: 'absolute',
+    padding: '4px',
+    background: 'rgba(0, 0, 0, 0.8)',
+    color: '#fff',
+    maxWidth: '300px',
+    fontSize: '10px',
+    zIndex: 9,
+    pointerEvents: 'none'
+};

@@ -152,7 +152,10 @@ class DeckRoot extends React.PureComponent {
 
         return (
             <div>
-
+                {/*<div className="tooltip"*/}
+                     {/*style={{left: 100, top: 100}}>*/}
+                    {/*<div>Neighborhood</div>*/}
+                {/*</div>*/}
                 <MapGL
                     mapboxApiAccessToken={DARK_TOKEN}
                     width={width}

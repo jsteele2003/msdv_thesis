@@ -14,10 +14,15 @@ import {LinearInterpolator, FlyToInterpolator} from 'react-map-gl';
 import { bootstrapUtils } from 'react-bootstrap/lib/utils';
 
 bootstrapUtils.addStyle(Badge, 'white');
+bootstrapUtils.addStyle(Badge, 'wh');
 bootstrapUtils.addStyle(Badge, 'poc');
 bootstrapUtils.addStyle(Badge, 'black');
 bootstrapUtils.addStyle(Badge, 'asian');
 bootstrapUtils.addStyle(Badge, 'latino');
+bootstrapUtils.addStyle(Badge, 'a');
+bootstrapUtils.addStyle(Badge, 'b');
+bootstrapUtils.addStyle(Badge, 'c');
+bootstrapUtils.addStyle(Badge, 'd');
 
 
 const rasterMapStyle = fromJS(MAP_STYLE);
@@ -199,9 +204,33 @@ class ControlRoot extends PureComponent {
         }
     }
 
+    _handleEnter5(c){
+        if(c.previousPosition == 'below') {
+            const updatedView = {
+                zoom: 11.017839842367197,
+                latitude:  40.01199215140806,
+                longitude: -75.13280475734666,
+                pitch: 55.44616742850198,
+                bearing: -91.25,
+                transitionDuration: 3000,
+                transitionInterpolator: new FlyToInterpolator(),
+                transitionEasing: d3.easeCubic
+            };
+            this.setState({view5: updatedView});
+            this.flyCam(updatedView);
+
+        }
+    }
+
+    _handleLeave5(c){
+        if(c.currentPosition == 'below') {
+            this.flyCam(this.state.view4);
+        }
+    }
+
     _handleBtClick(mode){
         const { mapMode } = this.props;
-        if (mode === mapMode) {
+        if (mode === mapMode && mapMode != MapMode.DOTS) {
             this.props.selectModeFunc(MapMode.NONE);
             return;
         }
@@ -261,6 +290,7 @@ class ControlRoot extends PureComponent {
                                             width={"100%"}
                                             loading={this.props.oldDots === null}
                                         />
+                                        {this.props.oldDots === null && <p className="text-center">Loading Data...</p>}
 
 
                                     </div>
@@ -300,13 +330,18 @@ class ControlRoot extends PureComponent {
 
                             <Row>
                                 <Col xs={6} xsOffset={3}>
-                                    <p style={{fontSize: '20px'}} >
+                                    <p style={{
+                                        fontSize: '20px',
+                                        opacity: leadOpacity,
+                                        transition: "opacity 3s ease-in-out",
+                                        visibility: visibility}} >
                                         In the 20th Century, this practice came to be known generally as "redlining" - the selective denial of credit and services to physically-defined spaces, on the basis of race.
                                         However, the term grew out of a reference to something more specific:
                                         the Home Owner's Loan Corporation. Part of the New Deal, the federal program was conceived to underwrite loans to in-need Americans.
                                         But by the late 1930's, with the program supposedly winding down, HOLC began drawing maps of "residential security" for American cities -
                                         maps which often divided areas according to racial desirability.
                                     </p>
+
                                 </Col>
                             </Row>
 
@@ -333,7 +368,7 @@ class ControlRoot extends PureComponent {
                                     {/*</Button>*/}
                                 {/*</Col>*/}
                             </Row>
-                            <Row style={{ height: '50%'}}/>
+                            <Row style={{ height: '20%'}}/>
                             <Row>
                                 <Col xs={8} xsOffset={2} style={{opacity: opacity,
                                     transition: "opacity 5s ease-in-out",}}>
@@ -358,7 +393,8 @@ class ControlRoot extends PureComponent {
                             />
                             <Row>
 
-                                <Col xs={8} xsOffset={2}>
+                                <Col xs={8} xsOffset={2} style={{opacity: opacity,
+                                    transition: "opacity 5s ease-in-out",}}>
                                     <style type="text/css">{`
                                     .badge-a {
                                         background-color: #6ef442;
@@ -422,36 +458,42 @@ class ControlRoot extends PureComponent {
                                         background-color: #0080ff;
                                         min-width:30px;
                                         line-height:2;
+                                        border-radius: 15px;
                                     }
                                     .badge-wh {
                                         margin-right:2.5%;
                                         background-color: #0080ff;
                                         min-width:30px;
                                         line-height:2;
+                                        border-radius: 15px;
                                     }
                                     .badge-poc {
                                         line-height:2;
                                         margin-left:2.5%
                                         min-width:30px;
                                          background-color: #f45006;
+                                         border-radius: 15px;
                                     }
                                     .badge-black {
                                         margin-right:2.5%;
                                         line-height:2;
                                         min-width:30px;
                                         background-color: #ff0080;
+                                        border-radius: 15px;
                                     }
                                     .badge-asian {
                                         line-height:2;
                                         margin-left:2.5%;
                                         min-width:30px;
                                          background-color: #89f442;
+                                         border-radius: 15px;
                                     }
                                     .badge-latino {
                                         line-height:2;
                                         margin-left:5%;
                                         min-width:30px;
                                          background-color: #f49542;
+                                         border-radius: 15px;
                                     }
                                     `}</style>
                                     <div style={{marginTop:'10%', display: 'flex', justifyContent: 'center'}}>
@@ -488,10 +530,15 @@ class ControlRoot extends PureComponent {
                             <Row>
 
                                 <Col xs={8} xsOffset={2}>
+                                    <Waypoint
+                                        onEnter={(evt) => this._handleEnter5(evt)} onLeave={(evt) => this._handleLeave5(evt)}
+                                    />
                                     <p style={{fontSize: '20px'}} >
                                         These borders don't just express racial divides;
-                                        the disparities in socioeconomic which exist in general in America can be seen along these boundaries too. </p>
-                                    <Button className="text-center" active={mapMode === MapMode.POLYINC} onClick={() => this._handleBtClick(MapMode.DOTS)} block> 2010 Data</Button>
+                                        the disparities in socioeconomic which exist in general in America can be seen along these boundaries too.
+                                        The average black family possesses 1/13th the wealth of the average white one;
+                                    </p>
+                                    <Button className="text-center" active={mapMode === MapMode.POLYINC} onClick={() => this._handleBtClick(MapMode.POLYINC)} block> Scale by Property Value</Button>
 
                                 </Col>
                             </Row>

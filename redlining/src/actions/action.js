@@ -1,7 +1,10 @@
-import {UPDATE_MAP, SELECT_MODE, LOAD_POLY, LOAD_PH_POLY, LOAD_HOLC, LOAD_OLD_POINTS, LOAD_POP_POINTS, UPDATE_SCALE, UPDATE_STYLE} from '../constants/action_types';
+import {UPDATE_MAP, SELECT_MODE, LOAD_POLY, LOAD_PH_POLY, LOAD_HOLC, LOAD_OLD_POINTS, LOAD_POP_POINTS, UPDATE_HOVER,  UPDATE_SCALE, UPDATE_STYLE} from '../constants/action_types';
 
 export const updateMap = mapViewState =>
     ({type: UPDATE_MAP, mapViewState: mapViewState});
+
+export const updateHover = hoveredObject =>
+    ({type: UPDATE_HOVER, hoveredObject: hoveredObject});
 
 export const updateStyle = mapStyle =>
     ({type: UPDATE_STYLE, mapStyle: mapStyle});
