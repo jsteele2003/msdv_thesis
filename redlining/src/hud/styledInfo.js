@@ -20,6 +20,18 @@ export const ControlContainer = styled.div`
 `;
 
 
+export const ChartContainer = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: 30px 10px 5px 20px #777;
+    transition: width 1.5s ease-in-out;
+    -webkit-font-smoothing: antialiased;
+    outline: none;
+    opacity: 0.65;
+`;
+
+
 export const dummySentences = [
     'Lorem ipsum dolor sit amet, consectetuer adipiscing elit.',
     'Donec hendrerit tempor tellus.',

@@ -54,6 +54,7 @@ export default class PolyOverlay extends PureComponent{
 
     //unsafe, should look for alternative
     componentWillReceiveProps(nextProps) {
+        // if(this.props.props.mapMode == MapMode.POLYINC || this.props.props.mapMode == MapMode.POLYHS){}
         if (nextProps.props.mapMode != this.props.props.mapMode) {
             this.setState({elevationScale: elevationScale.min});
             this._animate();
@@ -146,7 +147,7 @@ export default class PolyOverlay extends PureComponent{
 
     render(){
         const {mapViewState, popDots, oldDots, mapMode, polygons, holc, phPolygons} = this.props.props;
-        let colors = (mapMode == MapMode.DOTS ? DOT_COLORS : OLD_COLORS);
+        let colors = DOT_COLORS;
         const holcColor = this.state.holcColor;
         const { width, height } = this.props.state;
 
@@ -166,7 +167,7 @@ export default class PolyOverlay extends PureComponent{
                     duration: 4000,
                     easing: d3.easeCubicInOut
                 },
-                getColor: 600
+                getColor: 4000
             }
         });
 

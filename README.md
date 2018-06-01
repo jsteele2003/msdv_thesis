@@ -8,4 +8,4 @@ In general, there persists today in America an embedded network of such structur
 Compounding the issue of discursively challenging these structures are broad misconceptions on their character and import. When conversations are allowed to focus around only the most explicit and interpersonal instances, it enables all else to be hand-waved away with only vague dismissals; premises are hidden and rhetoric is elevated.
 However, with issues as directly geospatial as redlining and de facto segregation, there exists an opportunity in visual media to create direct, concise, and easily-interpretable representations of typically oblique content- content that remains both vital to contemporary social welfare, and fundamentally misunderstood by the American layman.
 
-[![Project](./redlining/assets/preview1.png)](https://jsteele2003.github.io/msdv_thesis/redlining/dist/index.html)
+[![Project](./redlining/assets/preview2.png)](https://jsteele2003.github.io/msdv_thesis/redlining/dist/index.html)

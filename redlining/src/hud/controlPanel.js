@@ -208,8 +208,8 @@ class ControlRoot extends PureComponent {
         if(c.previousPosition == 'below') {
             const updatedView = {
                 zoom: 11.017839842367197,
-                latitude:  40.01199215140806,
-                longitude: -75.13280475734666,
+                latitude:  40.05956642191818,
+                longitude: -75.11831041438738,
                 pitch: 55.44616742850198,
                 bearing: -91.25,
                 transitionDuration: 3000,
@@ -217,7 +217,6 @@ class ControlRoot extends PureComponent {
                 transitionEasing: d3.easeCubic
             };
             this.setState({view5: updatedView});
-            this.props.selectModeFunc(MapMode.NONE);
             this.flyCam(updatedView);
 
         }
@@ -340,8 +339,8 @@ class ControlRoot extends PureComponent {
                                         visibility: visibility}} >
                                         In the 20th Century, this practice came to be known generally as "redlining" - the selective denial of credit and services to physically-defined spaces, on the basis of race.
                                         However, the term grew out of a reference to something more specific:
-                                        the Home Owner's Loan Corporation. Part of the New Deal, the federal program was conceived to underwrite loans to in-need Americans.
-                                        But by the late 1930's, with the program supposedly winding down, HOLC began drawing maps of "residential security" for American cities -
+                                        the Home Owner's Loan Corporation. Formed as part of the New Deal, the federal program was conceived to underwrite loans to in-need Americans.
+                                        But by the late 1930's, with the program supposedly winding down, HOLC began drawing maps of "residential security" for longer-term real estate investment in American cities -
                                         maps which often divided areas according to racial desirability.
                                     </p>
 
@@ -380,12 +379,12 @@ class ControlRoot extends PureComponent {
                                     />
                                     <h1 className="text-center">
                                         PHILADELPHIA <br/>
-                                        HOLC MAP, 1936
+                                        HOLC MAP, 1937
                                     </h1>
-                                    <p style={{fontSize: '20px',
+                                    <p style={{fontSize: '16px',
                                            }} >
-                                        The maps bracketed cities neighborhoods into 4 categories (A-D).
-                                        Across the country, the lowest-ranked D neighbourhoods showed repeated differences in racial composition
+                                        The maps bracketed cities neighborhoods into 4 categories (A-D). Among other factors, the lowest ranked D areas were marked
+                                        by internal documents as suffering from "infiltration of lower grade populations"; across the country, these neighbourhoods showed repeated differences in racial composition
                                         from the other, higher-rated areas- even when controlling for housing value.
                                     </p>
                                 </Col>
@@ -428,8 +427,8 @@ class ControlRoot extends PureComponent {
                                          border-radius:0px;
                                     }
                                     `}</style>
-                                    <p style={{fontSize: '20px'}} >
-                                        In this case, the most apparent instance of the trend is in West Philadelphia, on a border defined by Market Street-
+                                    <p style={{fontSize: '16px'}} >
+                                        In Philadelphia, the most apparent instance was west of the Schuylkill River, on a border defined by Market Street-
                                         the area north of which was shaded entirely in red.
                                     </p>
                                     <div style={{marginTop:'10%', display: 'flex', justifyContent: 'center'}}>
@@ -447,14 +446,12 @@ class ControlRoot extends PureComponent {
                                         PHILADELPHIA, <br/>
                                         1940
                                     </h1>
-                                    <p style={{fontSize: '20px'}} >
+                                    <p style={{fontSize: '16px'}} >
                                         If we overlay demographic data from along this border, the racial divide becomes readily apparent; in general, virtually every
                                         minority-populated area in the city was also redlined.
 
                                     </p>
                                     <Button className="text-center" active={mapMode === MapMode.OLD} onClick={() => this._handleBtClick(MapMode.OLD)} block> 1940 Data</Button>
-                                    <p style={{fontSize: '20px'}}>Each dot represents a single person, living in Philadelphia in 1940; the colour of the dot corresponds to whether that person was White or PoC.
-                                    Hover over the map to inspect the underlying HOLC lines.</p>
                                     <style type="text/css">{`
                                     .badge-white {
                                         margin-right:5%;
@@ -474,7 +471,7 @@ class ControlRoot extends PureComponent {
                                         line-height:2;
                                         margin-left:2.5%
                                         min-width:30px;
-                                         background-color: #f45006;
+                                         background-color: #ff0080;
                                          border-radius: 15px;
                                     }
                                     .badge-black {
@@ -500,8 +497,10 @@ class ControlRoot extends PureComponent {
                                     }
                                     `}</style>
                                     <div style={{marginTop:'10%', display: 'flex', justifyContent: 'center'}}>
-                                        <Badge bsStyle="wh">White</Badge> <Badge bsStyle="poc">PoC</Badge>
+                                        <Badge bsStyle="wh">White</Badge> <Badge bsStyle="poc">Black</Badge>
                                     </div>
+                                    <p style={{fontSize: '16px', marginTop:'10%'}}>Each dot represents a single person, living in Philadelphia in 1940, accurate to the tract-level; the colour of the dot corresponds to whether that person was White or Black.
+                                        Hover over the map to inspect the underlying HOLC lines.</p>
 
                                 </Col>
                             </Row>
@@ -514,46 +513,57 @@ class ControlRoot extends PureComponent {
                                     />
                                     <h1 className="text-center">
                                         PHILADELPHIA, <br/>
-                                        2010
+                                        2016
                                     </h1>
-                                    <p style={{fontSize: '20px'}} >
+                                    <p style={{fontSize: '16px'}} >
                                         These lines of segregation may have shifted over time, but they haven't dissolved.
                                         Although the segregating effects of the HOLC maps reached their worst point in the 1960's, before the passage of federal civil rights laws
                                         such as the Fair Housing and Community Reinvestment Acts, research efforts in 2017 showed still-lingering borders along the original C-D boundaries.
-                                        With the more granular demographic information that is now available, we can distinguish an array of spatial disparities and divisions in Philadelphia from the current decade.
+                                        With the more granular demographic information that is now available on a census tract basis, we can distinguish an array of spatial disparities and divisions in Philadelphia from the current decade.
                                         Now when you hover over the map, you can inspect contemporary Philly neighbourhoods- and see how many are defined by the racial divides seen here.
                                     </p>
-                                    <Button className="text-center" active={mapMode === MapMode.DOTS} onClick={() => this._handleBtClick(MapMode.DOTS)} block> 2010 Data</Button>
+                                    <Button className="text-center" active={mapMode === MapMode.DOTS} onClick={() => this._handleBtClick(MapMode.DOTS)} block> 2016 Data</Button>
                                     <div style={{marginTop:'10%', display: 'flex', justifyContent: 'center'}}>
                                         <Badge bsStyle="white">White</Badge> <Badge bsStyle="black">Black</Badge><Badge bsStyle="asian">Asian</Badge><Badge bsStyle="latino">Latino</Badge>
                                     </div>
                                 </Col>
                             </Row>
                             <Row style={{ height: '50%'}}></Row>
-                            <Row>
+                            <Row style={{ height: '100%'}}>
 
                                 <Col xs={8} xsOffset={2}>
                                     <Waypoint
                                         onEnter={(evt) => this._handleEnter5(evt)} onLeave={(evt) => this._handleLeave5(evt)}
                                     />
                                     <h1 className="text-center">
-                                        DIVIDING <br/>
-                                        LINES
+                                        PLACE <br/>
+                                        MATTERS
                                     </h1>
-                                    <p style={{fontSize: '20px'}} >
+                                    <p style={{marginBottom: '10%', fontSize: '16px'}} >
                                         The city borders don't just express purely racial divides;
-                                        the disparities in socioeconomic which exist in general in America can be seen along these boundaries too.
-                                        The average black family possesses 1/13th the wealth of the average white one;
+                                        the income and wealth disparities which exist in general in America can be seen along these boundaries too.
+                                        The average black man in 2016 earned 70% of the wage a white man did, while wealth is even more concentrated, with the average black family in 2017 owning 1/13th of the wealth the average white one does.
+                                        These kinds of gaps can be mapped by aggregating the 2016 demographic data up to the overall tract level that it came from, then scaling it according to
+                                        certain economic metrics from that tract.
+
                                     </p>
                                     <ButtonGroup vertical block>
                                         <Button className="text-center" active={mapMode === MapMode.POLYINC} onClick={() => this._handleBtClick(MapMode.POLYINC)}> Scale Tracts by Income</Button>
                                         <Button className="text-center" active={mapMode === MapMode.POLYHS} onClick={() => this._handleBtClick(MapMode.POLYHS)}> Scale Tracts by Housing Value</Button>
 
-                                    </ButtonGroup>;
+                                    </ButtonGroup>
+
+                                    <div style={{marginTop:'10%', display: 'flex', justifyContent: 'center'}}>
+                                        <Badge bsStyle="white">White</Badge> <Badge bsStyle="black">Black</Badge><Badge bsStyle="asian">Asian</Badge><Badge bsStyle="latino">Latino</Badge>
+                                    </div>
+
+                                    <p style={{marginTop:'10%', fontSize: '16px'}}>
+                                       Here, each census tract is colour-coded according to the same legend as before, to represent the most prevalent racial group within the tract. Its height will scale according to the selection above-
+                                        with the gap growing even starker when scaling for housing value as a proxy for wealth.
+                                    </p>
 
                                 </Col>
                             </Row>
-                            <Row style={{ height: '50%'}}></Row>
 
 
 
