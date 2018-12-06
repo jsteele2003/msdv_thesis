@@ -13,8 +13,9 @@ export const ControlContainer = styled.div`
     right: 0;
     height: 100vh;
     box-shadow: 30px 10px 5px 20px #777;
-    transition: width 1.5s ease-in-out;
     -webkit-font-smoothing: antialiased;
+    -webkit-transition: width 1.5s ease-in-out;
+    transition: width 1.5s ease-in-out;
     outline: none;
     opacity: 0.65;
 `;
@@ -25,6 +26,7 @@ export const ChartContainer = styled.div`
     top: 0;
     left: 0;
     box-shadow: 30px 10px 5px 20px #777;
+    -webkit-transition: width 1.5s ease-in-out;
     transition: width 1.5s ease-in-out;
     -webkit-font-smoothing: antialiased;
     outline: none;
